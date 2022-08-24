@@ -187,7 +187,7 @@ public static class ModifyPowerupTree
 	// Nerf ritual to only give 0.1% per 10 kills
 	[HarmonyPatch(typeof(DamageBuffOnCurseKill), "Start")]
 	[HarmonyPrefix]
-	static void Start(ref float ___damageBuff)
+	static void NerfCurse(ref float ___damageBuff)
 	{
 		___damageBuff = 0.001f;
 	}
