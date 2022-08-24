@@ -1,9 +1,12 @@
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
+using System.Reflection.Emit;
 
 using HarmonyLib;
 
 using flanne;
+using flanne.PowerupSystem;
 
 using UnityEngine;
 
@@ -190,6 +193,33 @@ public static class ModifyPowerupTree
 	static void NerfCurse(ref float ___damageBuff)
 	{
 		___damageBuff = 0.001f;
+	}
+
+	// Nerf electro mastery
+	[HarmonyPatch(typeof(ThunderDamageUp), "Apply")]
+	[HarmonyTranspiler]
+	static IEnumerable<CodeInstruction> NerfThunderSize(
+		IEnumerable<CodeInstruction> instructions)
+	{
+		FieldInfo thunderDamageMulti =
+			typeof(ThunderDamageUp).GetField(
+				"thunderDamageMulti",
+				BindingFlags.NonPublic | BindingFlags.Instance);
+
+		return new CodeMatcher(instructions)
+			.Start()
+			.InsertAndAdvance(
+				new CodeInstruction(OpCodes.Ldarg_0),
+				new CodeInstruction(OpCodes.Ldarg_0),
+				new CodeInstruction(OpCodes.Ldfld, thunderDamageMulti),
+				new CodeInstruction(OpCodes.Ldc_R4, 0.35f),
+				new CodeInstruction(OpCodes.Add),
+				new CodeInstruction(OpCodes.Stfld, thunderDamageMulti))
+			.MatchForward(
+				false,
+				new CodeMatch(OpCodes.Ldc_R4, 1.75f))
+			.SetOperandAndAdvance(1.1f)
+			.InstructionEnumeration();
 	}
 }
 }
