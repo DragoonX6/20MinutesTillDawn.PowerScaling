@@ -57,7 +57,7 @@ public static class ModifyPowerupTree
 			"reaper_rounds",
 			"aged_dragon",
 			"rapid_fire_name",
-			"vengeful_ghost_name",
+			"sharpen_name",
 			"vitality_name",
 			"electro_mastery_name",
 			"intense_burn_name",
