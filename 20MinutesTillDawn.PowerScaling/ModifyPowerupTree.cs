@@ -14,6 +14,8 @@ namespace _20MinutesTillDawn.PowerScaling
 {
 public static class ModifyPowerupTree
 {
+	static FieldInfo statChangesField = null;
+
 	[HarmonyPatch(
 		typeof(PowerupGenerator),
 		nameof(PowerupGenerator.InitPowerupPool))]
@@ -75,6 +77,21 @@ public static class ModifyPowerupTree
 			infRepeatNames
 				.Where(n => n.Equals(p.powerup.nameStringID.key))
 				.Do(_ => p.numTimeRepeatable = int.MaxValue);
+
+			if(p.powerup.nameStringID.key == "sharpen_name")
+			{
+				if(statChangesField == null)
+				{
+					statChangesField = typeof(StatPowerup).GetField(
+						"statChanges",
+						BindingFlags.Instance | BindingFlags.NonPublic);
+				}
+
+				StatChange[] statChanges =
+					(StatChange[])statChangesField.GetValue(p.powerup);
+
+				statChanges[0].value = 0.15f;
+			}
 		});
 
 		// power_shot_name
