@@ -44,7 +44,8 @@ public static class ModifyPowerupTree
 			"assassin_name",
 			"focal_point_name",
 			"light_weaponry_name",
-			"kill_clip_name"
+			"kill_clip_name",
+			"frostbite_name"
 		};
 
 		List<string> infRepeatNames = new List<string>
