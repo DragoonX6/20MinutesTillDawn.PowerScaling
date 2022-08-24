@@ -1,0 +1,49 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<TargetFramework>net472</TargetFramework>
+		<RootNamespace>_20MinutesTillDawn.PowerScaling</RootNamespace>
+	</PropertyGroup>
+
+	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+		<DebugType>full</DebugType>
+		<DebugSymbols>true</DebugSymbols>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<PackageReference Include="Mono.Unofficial.pdb2mdb" Version="4.2.3.4" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<Reference Include="0Harmony">
+			<HintPath>C:\Program Files (x86)\Steam\steamapps\common\20MinuteTillDawn\BepInEx\core\0Harmony.dll</HintPath>
+		</Reference>
+		<Reference Include="Assembly-CSharp">
+			<HintPath>C:\Program Files (x86)\Steam\steamapps\common\20MinuteTillDawn\MinutesTillDawn_Data\Managed\Assembly-CSharp.dll</HintPath>
+		</Reference>
+		<Reference Include="BepInEx">
+			<HintPath>C:\Program Files (x86)\Steam\steamapps\common\20MinuteTillDawn\BepInEx\core\BepInEx.dll</HintPath>
+		</Reference>
+		<Reference Include="BepInEx.Harmony">
+			<HintPath>C:\Program Files (x86)\Steam\steamapps\common\20MinuteTillDawn\BepInEx\core\BepInEx.Harmony.dll</HintPath>
+		</Reference>
+		<Reference Include="MonoMod.Utils">
+			<HintPath>C:\Program Files (x86)\Steam\steamapps\common\20MinuteTillDawn\BepInEx\core\MonoMod.Utils.dll</HintPath>
+		</Reference>
+		<Reference Include="UnityEngine">
+			<HintPath>C:\Program Files (x86)\Steam\steamapps\common\20MinuteTillDawn\MinutesTillDawn_Data\Managed\UnityEngine.dll</HintPath>
+		</Reference>
+		<Reference Include="UnityEngine.CoreModule">
+			<HintPath>C:\Program Files (x86)\Steam\steamapps\common\20MinuteTillDawn\MinutesTillDawn_Data\Managed\UnityEngine.CoreModule.dll</HintPath>
+		</Reference>
+	</ItemGroup>
+
+	<Target Name="PostBuild" AfterTargets="PostBuildEvent">
+		<!-- Debug build: Create mdb from pdb for debugging; Copy DLL, MDB, and PDB to BepInEx plugins folder -->
+		<Exec Command="copy /Y &quot;$(TargetPath)&quot; /B &quot;C:\Program Files (x86)\Steam\steamapps\common\20MinuteTillDawn\BepInEx\plugins\$(TargetFileName)&quot; /B&#xD;&#xA;&quot;$(USERPROFILE)\.nuget\packages\mono.unofficial.pdb2mdb\4.2.3.4\tools\pdb2mdb.exe&quot; &quot;$(TargetPath)&quot;&#xD;&#xA;copy /Y &quot;$(TargetDir)$(TargetName).pdb&quot; /B &quot;C:\Program Files (x86)\Steam\steamapps\common\20MinuteTillDawn\BepInEx\plugins\$(TargetName).pdb&quot; /B&#xD;&#xA;copy /Y &quot;$(TargetPath).mdb&quot; /B &quot;C:\Program Files (x86)\Steam\steamapps\common\20MinuteTillDawn\BepInEx\plugins\$(TargetFileName).mdb&quot; /B&#xD;&#xA;" Condition="'$(Configuration)' == 'Debug'" />
+
+		<!-- Release build: Copy DLL, and PDB to BepInEx plugins folder -->
+		<Exec Command="copy /Y &quot;$(TargetPath)&quot; /B &quot;C:\Program Files (x86)\Steam\steamapps\common\20MinuteTillDawn\BepInEx\plugins\$(TargetFileName)&quot; /B&#xD;&#xA;copy /Y &quot;$(TargetDir)$(TargetName).pdb&quot; /B &quot;C:\Program Files (x86)\Steam\steamapps\common\20MinuteTillDawn\BepInEx\plugins\$(TargetName).pdb&quot; /B&#xD;&#xA;" Condition="'$(Configuration)' == 'Release'" />
+	</Target>
+
+</Project>
