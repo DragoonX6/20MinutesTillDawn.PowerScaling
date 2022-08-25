@@ -1,5 +1,3 @@
-using System;
-using System.Linq;
 using System.Collections.Generic;
 using System.Reflection;
 using System.Reflection.Emit;
@@ -7,8 +5,6 @@ using System.Reflection.Emit;
 using HarmonyLib;
 
 using flanne;
-
-using UnityEngine;
 
 namespace _20MinutesTillDawn.PowerScaling
 {
@@ -64,67 +60,8 @@ public static class StatModOverride
 			.SetInstructionAndAdvance(
 				new CodeInstruction(OpCodes.Ldarg_0) { labels = { label } });
 
-		List<Tuple<int, CodeInstruction>> orderedInstructions =
-			new List<Tuple<int, CodeInstruction>>();
-
-		int pos = 0;
-		foreach(CodeInstruction inst in cm.Instructions())
-		{
-			if(inst.operand != null)
-				pos += inst.operand.GetType().Equals(typeof(Label))
-					? 1
-					: inst.IsLdloc() || inst.IsStloc()
-						? 1
-						: 4;
-
-			pos += inst.opcode.Size;
-
-			orderedInstructions.Add(new Tuple<int, CodeInstruction>(pos, inst));
-		}
-
-		foreach(Tuple<int, CodeInstruction> pair in orderedInstructions)
-		{
-			CodeInstruction inst = pair.Item2;
-			pos = pair.Item1;
-
-			if(inst.operand != null
-			   && inst.operand.GetType().Equals(typeof(Label)))
-			{
-				Label? outLabel;
-				if(inst.Branches(out outLabel))
-				{
-					var any = orderedInstructions
-						.Where(c => c.Item2.labels.Contains((Label)outLabel));
-
-					int target = any.Count() > 0 ? any.First().Item1 : -1;
-
-					Debug.Log($"IL_{pos:X4} {inst.opcode} {inst.operand} IL_{target:X4}");
-				}
-				else
-					Debug.Log($"IL_{pos:X4} {inst.opcode} {inst.operand} IL_????");
-			}
-			else
-				Debug.Log($"IL_{pos:X4} {inst.opcode} {inst.operand}");
-		}
-
 		return cm.InstructionEnumeration();
 	}
-
-	/*[HarmonyPatch(typeof(StatMod), nameof(StatMod.AddMultiplierBonus))]
-	[HarmonyPrefix]
-	static bool AddMultiplierBonus(
-		StatMod __instance,
-		EventHandler ___ChangedEvent,
-		ref float ____multiplierBonus,
-		float value)
-	{
-		Debug.Log($"Bonus: value: {value}, multiplier: {____multiplierBonus}");
-
-		____multiplierBonus *= 1f + value;
-		___ChangedEvent?.Invoke(__instance, null);
-
-		return false;
-	}*/
 
 	[HarmonyPatch(typeof(StatMod), nameof(StatMod.AddMultiplierReduction))]
 	[HarmonyTranspiler]

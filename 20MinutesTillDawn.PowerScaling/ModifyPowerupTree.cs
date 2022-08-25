@@ -22,26 +22,6 @@ public static class ModifyPowerupTree
 	[HarmonyPostfix]
 	static void InitPowerupPoolPostfix(ref List<PowerupPoolItem> ___powerupPool)
 	{
-		for(int i = 0; i < ___powerupPool.Count; ++i)
-		{
-			if((i + 1) % 4 == 0)
-				Debug.Log("");
-
-			PowerupPoolItem pi = ___powerupPool[i];
-
-			string description = pi.powerup.description;
-
-			while(description.IndexOf('<') > 0)
-			{
-				int start = description.IndexOf('<');
-				int end = description.IndexOf('>') + 1;
-
-				description = description.Remove(start, end - start);
-			}
-
-			Debug.Log($"{pi.powerup.nameStringID.key}: {description}");
-		}
-
 		List<string> noRepeatNames = new List<string>
 		{
 			//"ritual_name",

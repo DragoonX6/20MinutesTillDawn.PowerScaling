@@ -14,9 +14,7 @@ public static class CapStats
 	[HarmonyPostfix]
 	static void CapProjectileSpeed(ref ProjectileRecipe __result)
 	{
-		//Debug.Log($"Projectile speed would be: {__result.projectileSpeed}");
 		__result.projectileSpeed = Mathf.Min(__result.projectileSpeed, 100f);
-		//Debug.Log($"Projectile speed capped to: {__result.projectileSpeed}");
 	}
 }
 }

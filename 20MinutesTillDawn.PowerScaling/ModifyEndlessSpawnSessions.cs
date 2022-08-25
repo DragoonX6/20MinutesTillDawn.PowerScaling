@@ -73,7 +73,6 @@ public static class ModifyEndlessSpawnSessions
 
 		while(result.MoveNext())
 		{
-			Debug.Log("Multiply!!!");
 			// *2 lags the game lol
 			___hordeSpawner.spawnRateMulitplier *= 1.25f;
 			___hordeSpawner.speedMultiplier *= 1.2f;
