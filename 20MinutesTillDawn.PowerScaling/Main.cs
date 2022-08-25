@@ -1,10 +1,14 @@
+using System.Linq;
+
 using UnityEngine.SceneManagement;
 
 using BepInEx;
+using BepInEx.Bootstrap;
+
 using HarmonyLib;
-using HarmonyLib.Tools;
 
 using _20MinutesTillDawn.PowerScaling.Fixes;
+using _20MinutesTillDawn.PowerScaling.Interop;
 
 namespace _20MinutesTillDawn.PowerScaling
 {
@@ -13,14 +17,13 @@ namespace _20MinutesTillDawn.PowerScaling
 	"20 Minutes Till Dawn Power Scaling Mod",
 	"0.15.0")]
 [BepInProcess("MinutesTillDawn.exe")]
+[BepInDependency("BetterUI", BepInDependency.DependencyFlags.SoftDependency)]
 public class PowerScaling: BaseUnityPlugin
 {
 	private Harmony instance = new Harmony("PowerScaling");
 
 	public void Awake()
 	{
-		HarmonyFileLog.Enabled = true;
-
 		instance.PatchAll(typeof(StatModOverride));
 		instance.PatchAll(typeof(FixAdrenalinePowerup));
 		instance.PatchAll(typeof(FixBuffDuringHolyShield));
@@ -35,6 +38,9 @@ public class PowerScaling: BaseUnityPlugin
 		instance.PatchAll(typeof(ModifyPowerupTree));
 		instance.PatchAll(typeof(ModifyEndlessSpawnSessions));
 		instance.PatchAll(typeof(CapStats));
+
+		if(Chainloader.PluginInfos.Where(kv => kv.Key == "BetterUI").Any())
+			instance.PatchAll(typeof(BetterUIInterop));
 
 		Logger.LogInfo("Patching done.");
 
