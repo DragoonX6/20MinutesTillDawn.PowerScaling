@@ -21,14 +21,14 @@ public static class ModifyEndlessSpawnSessions
 		cycle = 2;
 	}
 
-	static IEnumerable<SpawnSession> GenerateSessions()
+	static IEnumerable<SpawnSession> GenerateInitialSessions()
 	{
 		yield return new SpawnSession() { objectPoolTag = "BrainMonster",   HP = 24,    maximum = 20,  numPerSpawn = 4,  spawnCooldown = 3,  startTime = 0,    duration = 60,  isElite = false };
 		yield return new SpawnSession() { objectPoolTag = "BrainMonster",   HP = 24,    maximum = 50,  numPerSpawn = 10, spawnCooldown = 4,  startTime = 60,   duration = 60,  isElite = false };
 		yield return new SpawnSession() { objectPoolTag = "Boomer",         HP = 30,    maximum = 2,   numPerSpawn = 1,  spawnCooldown = 4,  startTime = 60,   duration = 60,  isElite = false };
 		yield return new SpawnSession() { objectPoolTag = "BrainMonster",   HP = 30,    maximum = 200, numPerSpawn = 7,  spawnCooldown = 2,  startTime = 120,  duration = 240, isElite = false };
 		yield return new SpawnSession() { objectPoolTag = "Boomer",         HP = 30,    maximum = 10,  numPerSpawn = 2,  spawnCooldown = 5,  startTime = 120,  duration = 240, isElite = false };
-		yield return new SpawnSession() { objectPoolTag = "ElderBrain",     HP = 1000,  maximum = 1,   numPerSpawn = 1,  spawnCooldown = 10, startTime = 180,  duration = 5,   isElite = true };
+		yield return new SpawnSession() { objectPoolTag = "ElderBrain",     HP = 1000,  maximum = 1,   numPerSpawn = 1,  spawnCooldown = 10, startTime = 180,  duration = 5,   isElite = true  };
 		yield return new SpawnSession() { objectPoolTag = "BrainMonster",   HP = 60,    maximum = 400, numPerSpawn = 12, spawnCooldown = 2,  startTime = 360,  duration = 120, isElite = false };
 		yield return new SpawnSession() { objectPoolTag = "EyeMonster",     HP = 400,   maximum = 2,   numPerSpawn = 2,  spawnCooldown = 10, startTime = 360,  duration = 120, isElite = false };
 		yield return new SpawnSession() { objectPoolTag = "Boomer",         HP = 60,    maximum = 1,   numPerSpawn = 1,  spawnCooldown = 1,  startTime = 420,  duration = 120, isElite = false };
@@ -37,16 +37,41 @@ public static class ModifyEndlessSpawnSessions
 		yield return new SpawnSession() { objectPoolTag = "EyeMonster",     HP = 200,   maximum = 12,  numPerSpawn = 2,  spawnCooldown = 1,  startTime = 660,  duration = 120, isElite = false };
 		yield return new SpawnSession() { objectPoolTag = "Lamprey",        HP = 250,   maximum = 100, numPerSpawn = 5,  spawnCooldown = 1,  startTime = 660,  duration = 120, isElite = false };
 		yield return new SpawnSession() { objectPoolTag = "Boomer",         HP = 240,   maximum = 4,   numPerSpawn = 2,  spawnCooldown = 1,  startTime = 660,  duration = 120, isElite = false };
-		yield return new SpawnSession() { objectPoolTag = "SpawnerMonster", HP = 10000, maximum = 1,   numPerSpawn = 1,  spawnCooldown = 10, startTime = 680,  duration = 5,   isElite = true };
+		yield return new SpawnSession() { objectPoolTag = "SpawnerMonster", HP = 10000, maximum = 1,   numPerSpawn = 1,  spawnCooldown = 10, startTime = 680,  duration = 5,   isElite = true  };
 		yield return new SpawnSession() { objectPoolTag = "Lamprey",        HP = 400,   maximum = 300, numPerSpawn = 14, spawnCooldown = 1,  startTime = 780,  duration = 115, isElite = false };
 		yield return new SpawnSession() { objectPoolTag = "EyeMonster",     HP = 300,   maximum = 16,  numPerSpawn = 2,  spawnCooldown = 1,  startTime = 900,  duration = 60,  isElite = false };
 		yield return new SpawnSession() { objectPoolTag = "Boomer",         HP = 400,   maximum = 20,  numPerSpawn = 2,  spawnCooldown = 1,  startTime = 900,  duration = 60,  isElite = false };
-		yield return new SpawnSession() { objectPoolTag = "WingedMonster",  HP = 18000, maximum = 1,   numPerSpawn = 1,  spawnCooldown = 10, startTime = 960,  duration = 5,   isElite = true };
+		yield return new SpawnSession() { objectPoolTag = "WingedMonster",  HP = 18000, maximum = 1,   numPerSpawn = 1,  spawnCooldown = 10, startTime = 960,  duration = 5,   isElite = true  };
 		yield return new SpawnSession() { objectPoolTag = "BrainMonster",   HP = 250,   maximum = 600, numPerSpawn = 26, spawnCooldown = 1,  startTime = 960,  duration = 120, isElite = false };
 		yield return new SpawnSession() { objectPoolTag = "Lamprey",        HP = 500,   maximum = 300, numPerSpawn = 20, spawnCooldown = 1,  startTime = 1080, duration = 119, isElite = false };
 		yield return new SpawnSession() { objectPoolTag = "EyeMonster",     HP = 50,    maximum = 10,  numPerSpawn = 1,  spawnCooldown = 1,  startTime = 1080, duration = 119, isElite = false };
 	}
 
+	static IEnumerable<SpawnSession> GenerateNextSessions()
+	{
+		yield return new SpawnSession() { objectPoolTag = "BrainMonster",   HP = 300,    maximum = 300, numPerSpawn = 4,  spawnCooldown = 1,  startTime = 0,    duration = 60,  isElite = false };
+		yield return new SpawnSession() { objectPoolTag = "BrainMonster",   HP = 300,    maximum = 500, numPerSpawn = 10, spawnCooldown = 1,  startTime = 60,   duration = 60,  isElite = false };
+		yield return new SpawnSession() { objectPoolTag = "Boomer",         HP = 600,    maximum = 10,  numPerSpawn = 3,  spawnCooldown = 1,  startTime = 60,   duration = 60,  isElite = false };
+		yield return new SpawnSession() { objectPoolTag = "BrainMonster",   HP = 600,    maximum = 500, numPerSpawn = 7,  spawnCooldown = 1,  startTime = 120,  duration = 240, isElite = false };
+		yield return new SpawnSession() { objectPoolTag = "Boomer",         HP = 600,    maximum = 10,  numPerSpawn = 3,  spawnCooldown = 2,  startTime = 120,  duration = 240, isElite = false };
+		yield return new SpawnSession() { objectPoolTag = "ElderBrain",     HP = 10000,  maximum = 1,   numPerSpawn = 1,  spawnCooldown = 10, startTime = 180,  duration = 5,   isElite = true  };
+		yield return new SpawnSession() { objectPoolTag = "BrainMonster",   HP = 900,    maximum = 400, numPerSpawn = 12, spawnCooldown = 1,  startTime = 360,  duration = 120, isElite = false };
+		yield return new SpawnSession() { objectPoolTag = "EyeMonster",     HP = 10000,  maximum = 20,  numPerSpawn = 2,  spawnCooldown = 10, startTime = 360,  duration = 120, isElite = false };
+		yield return new SpawnSession() { objectPoolTag = "Boomer",         HP = 1000,   maximum = 10,  numPerSpawn = 1,  spawnCooldown = 1,  startTime = 420,  duration = 120, isElite = false };
+		yield return new SpawnSession() { objectPoolTag = "BrainMonster",   HP = 1200,   maximum = 600, numPerSpawn = 16, spawnCooldown = 1,  startTime = 480,  duration = 120, isElite = false };
+		yield return new SpawnSession() { objectPoolTag = "Lamprey",        HP = 2000,   maximum = 300, numPerSpawn = 3,  spawnCooldown = 1,  startTime = 605,  duration = 55,  isElite = false };
+		yield return new SpawnSession() { objectPoolTag = "EyeMonster",     HP = 2000,   maximum = 24,  numPerSpawn = 2,  spawnCooldown = 1,  startTime = 660,  duration = 120, isElite = false };
+		yield return new SpawnSession() { objectPoolTag = "Lamprey",        HP = 3000,   maximum = 500, numPerSpawn = 5,  spawnCooldown = 1,  startTime = 660,  duration = 120, isElite = false };
+		yield return new SpawnSession() { objectPoolTag = "Boomer",         HP = 2500,   maximum = 40,  numPerSpawn = 2,  spawnCooldown = 1,  startTime = 660,  duration = 120, isElite = false };
+		yield return new SpawnSession() { objectPoolTag = "SpawnerMonster", HP = 100000, maximum = 1,   numPerSpawn = 1,  spawnCooldown = 10, startTime = 680,  duration = 5,   isElite = true  };
+		yield return new SpawnSession() { objectPoolTag = "Lamprey",        HP = 5000,   maximum = 600, numPerSpawn = 14, spawnCooldown = 1,  startTime = 780,  duration = 115, isElite = false };
+		yield return new SpawnSession() { objectPoolTag = "EyeMonster",     HP = 4000,   maximum = 16,  numPerSpawn = 2,  spawnCooldown = 1,  startTime = 900,  duration = 60,  isElite = false };
+		yield return new SpawnSession() { objectPoolTag = "Boomer",         HP = 5000,   maximum = 20,  numPerSpawn = 2,  spawnCooldown = 1,  startTime = 900,  duration = 60,  isElite = false };
+		yield return new SpawnSession() { objectPoolTag = "WingedMonster",  HP = 180000, maximum = 1,   numPerSpawn = 1,  spawnCooldown = 10, startTime = 960,  duration = 5,   isElite = true  };
+		yield return new SpawnSession() { objectPoolTag = "BrainMonster",   HP = 5000,   maximum = 600, numPerSpawn = 26, spawnCooldown = 1,  startTime = 960,  duration = 120, isElite = false };
+		yield return new SpawnSession() { objectPoolTag = "Lamprey",        HP = 7000,   maximum = 600, numPerSpawn = 20, spawnCooldown = 1,  startTime = 1080, duration = 119, isElite = false };
+		yield return new SpawnSession() { objectPoolTag = "EyeMonster",     HP = 2000,   maximum = 30,  numPerSpawn = 1,  spawnCooldown = 1,  startTime = 1080, duration = 119, isElite = false };
+	}
 	[HarmonyPatch(typeof(MapInitializer), "Start")]
 	[HarmonyPrefix]
 	static void Start()
@@ -58,7 +83,7 @@ public static class ModifyEndlessSpawnSessions
 			mapData.timeLimit = 1200;
 			mapData.spawnSessions = new List<SpawnSession>();
 
-			mapData.spawnSessions.AddRange(GenerateSessions());
+			mapData.spawnSessions.AddRange(GenerateInitialSessions());
 
 			mapData.bossSpawns[1].timeToSpawn = 900;
 		}
@@ -75,6 +100,10 @@ public static class ModifyEndlessSpawnSessions
 
 		result.MoveNext();
 		yield return result.Current;
+
+		MapData mapData = SelectedMap.MapData;
+		mapData.spawnSessions = new List<SpawnSession>();
+		mapData.spawnSessions.AddRange(GenerateNextSessions());
 
 		while(result.MoveNext())
 		{
