@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using HarmonyLib;
 
 using flanne;
+using flanne.Player;
 
 using UnityEngine;
 
@@ -12,6 +13,8 @@ namespace _20MinutesTillDawn.PowerScaling
 public static class ModifyEndlessSpawnSessions
 {
 	static int cycle = 2;
+
+	static PlayerXP playerXP = null;
 
 	public static void Reset()
 	{
@@ -68,11 +71,15 @@ public static class ModifyEndlessSpawnSessions
 		HordeSpawner ___hordeSpawner,
 		BossSpawner ___bossSpawner)
 	{
+		playerXP = GameObject.FindObjectOfType<PlayerXP>();
+
 		result.MoveNext();
 		yield return result.Current;
 
 		while(result.MoveNext())
 		{
+			playerXP.xpMultiplier.AddMultiplierBonus(1.2f);
+
 			// *2 lags the game lol
 			___hordeSpawner.spawnRateMulitplier *= 1.25f;
 			___hordeSpawner.speedMultiplier *= 1.2f;

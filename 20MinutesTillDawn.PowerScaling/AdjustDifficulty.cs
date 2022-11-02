@@ -11,7 +11,7 @@ public static class AdjustDifficulty
 	[HarmonyPostfix]
 	static void Start(GameController ___gameController)
 	{
-		___gameController.playerXP.xpMultiplier.AddMultiplierBonus(1.2f);
+		___gameController.playerXP.xpMultiplier.AddMultiplierBonus(2f);
 	}
 }
 }
