@@ -1,9 +1,8 @@
-using System.Reflection;
-
 using HarmonyLib;
 using Mono.Cecil.Cil;
 using MonoMod.Cil;
 
+using flanne;
 using flanne.PerkSystem.Actions;
 using flanne.Player.Buffs;
 
@@ -13,28 +12,30 @@ public static class FixupAddMultiplierBonus
 {
 	[HarmonyPatch(typeof(TemporaryStatBuff), "OnUnattach")]
 	[HarmonyPatch(typeof(ModStatAction), "DeActivate")]
+	[HarmonyPatch(typeof(BuffDuringHolyShield), "Deactivate")]
 	[HarmonyILManipulator]
-	static void FixupCallsite(ILContext il, MethodBase method)
+	static void FixupCallsite(ILContext il)
 	{
 		ILCursor c = new ILCursor(il);
 
-		c.GotoNext(
+		while(c.TryGotoNext(
 			MoveType.Before,
-			x => x.MatchLdcR4(-1f));
+			x => x.MatchLdcR4(-1f)))
+		{
+			c.Remove();
 
-		c.Remove();
+			c.Emit(OpCodes.Ldc_R4, 1f);
+			c.Emit(OpCodes.Ldc_R4, 1f);
 
-		c.Emit(OpCodes.Ldc_R4, 1f);
-		c.Emit(OpCodes.Ldc_R4, 1f);
+			c.Index += 2;
 
-		c.Index += 2;
+			c.Remove();
 
-		c.Remove();
-
-		c.Emit(OpCodes.Add);
-		c.Emit(OpCodes.Div);
-		c.Emit(OpCodes.Ldc_R4, 1f);
-		c.Emit(OpCodes.Sub);
+			c.Emit(OpCodes.Add);
+			c.Emit(OpCodes.Div);
+			c.Emit(OpCodes.Ldc_R4, 1f);
+			c.Emit(OpCodes.Sub);
+		}
 	}
 }
 }

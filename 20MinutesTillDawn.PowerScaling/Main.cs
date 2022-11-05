@@ -25,7 +25,6 @@ public class PowerScaling: BaseUnityPlugin
 	public void Awake()
 	{
 		instance.PatchAll(typeof(StatModOverride));
-		instance.PatchAll(typeof(FixBuffDuringHolyShield));
 		instance.PatchAll(typeof(FixBuffOnXP));
 		instance.PatchAll(typeof(FixDmgAndMSOnNotHurt));
 		instance.PatchAll(typeof(FixReloadRateUpOnKill));
