@@ -40,7 +40,7 @@ public static class FixReloadRateUpOnKill
 		ref int ____stacks,
 		object sender)
 	{
-		if((sender as Health).gameObject.tag == "Enemy" && stacks < 2000)
+		if((sender as Health).gameObject.tag == "Enemy" && stacks < 200)
 		{
 			___stats[StatType.ReloadRate].AddMultiplierBonus(___bonusPerStack);
 			++____stacks;
