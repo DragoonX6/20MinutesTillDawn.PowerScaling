@@ -72,6 +72,7 @@ public static class ModifyEndlessSpawnSessions
 		yield return new SpawnSession() { objectPoolTag = "Lamprey",        HP = 7000,   maximum = 600, numPerSpawn = 20, spawnCooldown = 1,  startTime = 1080, duration = 119, isElite = false };
 		yield return new SpawnSession() { objectPoolTag = "EyeMonster",     HP = 2000,   maximum = 30,  numPerSpawn = 1,  spawnCooldown = 1,  startTime = 1080, duration = 119, isElite = false };
 	}
+
 	[HarmonyPatch(typeof(MapInitializer), "Start")]
 	[HarmonyPrefix]
 	static void Start()

@@ -1,12 +1,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using System.Reflection.Emit;
 
 using HarmonyLib;
 
 using flanne;
-using flanne.PowerupSystem;
+using flanne.PerkSystem.Actions;
 
 using UnityEngine;
 
@@ -16,12 +15,28 @@ public static class ModifyPowerupTree
 {
 	static FieldInfo statChangesField = null;
 
+	static FieldInfo nameStringID = null;
+
 	[HarmonyPatch(
 		typeof(PowerupGenerator),
 		nameof(PowerupGenerator.InitPowerupPool))]
 	[HarmonyPostfix]
 	static void InitPowerupPoolPostfix(ref List<PowerupPoolItem> ___powerupPool)
 	{
+		if(nameStringID == null)
+		{
+			nameStringID = typeof(Powerup).GetField(
+				"nameStrID",
+				BindingFlags.Instance | BindingFlags.NonPublic);
+		}
+
+		if(statChangesField == null)
+		{
+			statChangesField = typeof(Powerup).GetField(
+				"statChanges",
+				BindingFlags.Instance | BindingFlags.NonPublic);
+		}
+
 		List<string> noRepeatNames = new List<string>
 		{
 			//"ritual_name",
@@ -50,23 +65,24 @@ public static class ModifyPowerupTree
 
 		___powerupPool.Do(p =>
 		{
+			string GetPowerupKey(Powerup powerup)
+			{
+				LocalizedString nameString =
+					(LocalizedString)nameStringID.GetValue(powerup);
+
+				return nameString.key;
+			}
+
 			noRepeatNames
-				.Where(n => n.Equals(p.powerup.nameStringID.key))
+				.Where(n => n.Equals(GetPowerupKey(p.powerup)))
 				.Do(_ => p.numTimeRepeatable = 1);
 
 			infRepeatNames
-				.Where(n => n.Equals(p.powerup.nameStringID.key))
+				.Where(n => n.Equals(GetPowerupKey(p.powerup)))
 				.Do(_ => p.numTimeRepeatable = int.MaxValue);
 
-			if(p.powerup.nameStringID.key == "sharpen_name")
+			if(GetPowerupKey(p.powerup) == "sharpen_name")
 			{
-				if(statChangesField == null)
-				{
-					statChangesField = typeof(StatPowerup).GetField(
-						"statChanges",
-						BindingFlags.Instance | BindingFlags.NonPublic);
-				}
-
 				StatChange[] statChanges =
 					(StatChange[])statChangesField.GetValue(p.powerup);
 
@@ -193,13 +209,19 @@ public static class ModifyPowerupTree
 	}
 
 	// Nerf electro mastery
-	[HarmonyPatch(typeof(ThunderDamageUp), "Apply")]
-	[HarmonyTranspiler]
-	static IEnumerable<CodeInstruction> NerfThunderSize(
+	[HarmonyPatch(typeof(ModThunderAreaAction), "Activate")]
+	[HarmonyPrefix]
+	static void NerfThunderSize(
+		GameObject target, ref float ___thunderAOEMod)
+	{
+		Debug.Log($"ThunderAOEMod: {___thunderAOEMod}");
+	}
+
+	/*static IEnumerable<CodeInstruction> NerfThunderSize(
 		IEnumerable<CodeInstruction> instructions)
 	{
 		FieldInfo thunderDamageMulti =
-			typeof(ThunderDamageUp).GetField(
+			typeof(ModThunderAreaAction).GetField(
 				"thunderDamageMulti",
 				BindingFlags.NonPublic | BindingFlags.Instance);
 
@@ -217,6 +239,6 @@ public static class ModifyPowerupTree
 				new CodeMatch(OpCodes.Ldc_R4, 1.75f))
 			.SetOperandAndAdvance(1.1f)
 			.InstructionEnumeration();
-	}
+	}*/
 }
 }

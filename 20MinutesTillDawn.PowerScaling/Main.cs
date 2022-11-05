@@ -25,18 +25,12 @@ public class PowerScaling: BaseUnityPlugin
 	public void Awake()
 	{
 		instance.PatchAll(typeof(StatModOverride));
-		instance.PatchAll(typeof(FixAdrenalinePowerup));
 		instance.PatchAll(typeof(FixBuffDuringHolyShield));
 		instance.PatchAll(typeof(FixBuffOnXP));
-		instance.PatchAll(typeof(FixBuffPlayerStats));
-		instance.PatchAll(typeof(FixBuffWhenStanding));
-		instance.PatchAll(typeof(FixDamageUpOnReload));
 		instance.PatchAll(typeof(FixDmgAndMSOnNotHurt));
-		instance.PatchAll(typeof(FixExtraDamageEveryNthThunder));
-		instance.PatchAll(typeof(FixFireRateOnHurt));
 		instance.PatchAll(typeof(FixReloadRateUpOnKill));
 		instance.PatchAll(typeof(ModifyPowerupTree));
-		instance.PatchAll(typeof(ModifyEndlessSpawnSessions));
+		//instance.PatchAll(typeof(ModifyEndlessSpawnSessions));
 		instance.PatchAll(typeof(CapStats));
 
 		if(Chainloader.PluginInfos.Where(kv => kv.Key == "BetterUI").Any())
@@ -51,7 +45,7 @@ public class PowerScaling: BaseUnityPlugin
 	public void OnSceneLoaded(Scene scene, LoadSceneMode sceneMode)
 	{
 		Logger.LogInfo(scene.name);
-		ModifyEndlessSpawnSessions.Reset();
+		//ModifyEndlessSpawnSessions.Reset();
 	}
 }
 }
