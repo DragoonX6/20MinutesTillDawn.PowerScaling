@@ -1,4 +1,9 @@
+using System.Linq;
+using System.Reflection;
+
 using HarmonyLib;
+using Mono.Cecil.Cil;
+using MonoMod.Cil;
 
 using flanne;
 
@@ -8,28 +13,51 @@ namespace _20MinutesTillDawn.PowerScaling.Fixes
 {
 public static class FixDmgAndMSOnNotHurt
 {
+	// Rewrite AddMultiplierBonus calls to the equation of:
+	// Let v be the boost per tick
+	// Let t be the amount of ticks
+	// AMB((1 / (1 + v) ^ t) - 1)
 	[HarmonyPatch(typeof(DmgAndMSOnNotHurt), "OnHurt")]
-	[HarmonyPrefix]
-	static bool OnHurt(
-		float ___damageBoostPerTick,
-		float ___movespeedBoostPerTick,
-		SpriteTrail ___spriteTrail,
-		StatsHolder ___stats,
-		ref int ____ticks,
-		ref float ____timer)
+	[HarmonyILManipulator]
+	static void FixOnHurt(ILContext il)
 	{
-		___stats[StatType.BulletDamage].AddMultiplierBonus(
-			Mathf.Pow(1f / (1f + ___damageBoostPerTick), ____ticks) - 1f);
+		ILCursor c = new ILCursor(il);
 
-		___stats[StatType.MoveSpeed].AddMultiplierBonus(
-			Mathf.Pow(1f / (1f + ___movespeedBoostPerTick), ____ticks) - 1f);
+		while(c.TryGotoNext(
+			MoveType.Before,
+			x => x.Match(OpCodes.Ldc_I4_M1)))
+		{
+			c.Remove();
 
-		___spriteTrail.SetEnabled(enabled: false);
+			c.Emit(OpCodes.Ldc_R4, 1f);
+			c.Emit(OpCodes.Ldc_R4, 1f);
 
-		____ticks = 0;
-		____timer = 0;
+			// Save the load field instructions to survive variable renames.
+			var saved1 = c.Instrs.Skip(c.Index).Take(2).ToArray();
+			var saved2 = c.Instrs.Skip(c.Index + 4).Take(2).ToArray();
 
-		return false;
+			c.RemoveRange(7);
+
+			foreach(Instruction inst in saved2)
+				c.Emit(inst.OpCode, inst.Operand);
+
+			c.Emit(OpCodes.Add);
+			c.Emit(OpCodes.Div);
+
+			foreach(Instruction inst in saved1)
+				c.Emit(inst.OpCode, inst.Operand);
+
+			c.Emit(OpCodes.Conv_R4);
+
+			c.Emit(
+				OpCodes.Call,
+				typeof(Mathf).GetMethod(
+					nameof(Mathf.Pow),
+					BindingFlags.Static | BindingFlags.Public));
+
+			c.Emit(OpCodes.Ldc_R4, 1f);
+			c.Emit(OpCodes.Sub);
+		}
 	}
 }
 }
