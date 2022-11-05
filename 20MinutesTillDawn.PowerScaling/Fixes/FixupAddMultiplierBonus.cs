@@ -3,6 +3,7 @@ using Mono.Cecil.Cil;
 using MonoMod.Cil;
 
 using flanne;
+using flanne.PowerupSystem;
 using flanne.PerkSystem.Actions;
 using flanne.Player.Buffs;
 
@@ -13,6 +14,7 @@ public static class FixupAddMultiplierBonus
 	[HarmonyPatch(typeof(TemporaryStatBuff), "OnUnattach")]
 	[HarmonyPatch(typeof(ModStatAction), "DeActivate")]
 	[HarmonyPatch(typeof(BuffDuringHolyShield), "Deactivate")]
+	[HarmonyPatch(typeof(BuffOnXP), "StartBuffCR", MethodType.Enumerator)]
 	[HarmonyILManipulator]
 	static void FixupCallsite(ILContext il)
 	{
