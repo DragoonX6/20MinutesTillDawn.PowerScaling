@@ -29,6 +29,7 @@ public class PowerScaling: BaseUnityPlugin
 		instance.PatchAll(typeof(FixBuffOnXP));
 		instance.PatchAll(typeof(FixDmgAndMSOnNotHurt));
 		instance.PatchAll(typeof(FixReloadRateUpOnKill));
+		instance.PatchAll(typeof(FixupAddMultiplierBonus));
 		instance.PatchAll(typeof(ModifyPowerupTree));
 		//instance.PatchAll(typeof(ModifyEndlessSpawnSessions));
 		instance.PatchAll(typeof(CapStats));
