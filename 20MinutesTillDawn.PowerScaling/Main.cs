@@ -31,6 +31,7 @@ public class PowerScaling: BaseUnityPlugin
 		instance.PatchAll(typeof(ModifyPowerupTree));
 		//instance.PatchAll(typeof(ModifyEndlessSpawnSessions));
 		instance.PatchAll(typeof(CapStats));
+		instance.PatchAll(typeof(AdjustDifficulty));
 
 		if(Chainloader.PluginInfos.Where(kv => kv.Key == "BetterUI").Any())
 			instance.PatchAll(typeof(BetterUIInterop));
