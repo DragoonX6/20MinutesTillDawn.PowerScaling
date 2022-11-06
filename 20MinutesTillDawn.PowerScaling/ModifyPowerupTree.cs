@@ -208,37 +208,14 @@ public static class ModifyPowerupTree
 		___damageBuff = 0.001f;
 	}
 
-	// Nerf electro mastery
+	// Nerf electro mastery's area to 5% size increase. I honestly may have to
+	// even lower here.
 	[HarmonyPatch(typeof(ModThunderAreaAction), "Activate")]
 	[HarmonyPrefix]
 	static void NerfThunderSize(
 		GameObject target, ref float ___thunderAOEMod)
 	{
-		Debug.Log($"ThunderAOEMod: {___thunderAOEMod}");
+		___thunderAOEMod = 0.05f;
 	}
-
-	/*static IEnumerable<CodeInstruction> NerfThunderSize(
-		IEnumerable<CodeInstruction> instructions)
-	{
-		FieldInfo thunderDamageMulti =
-			typeof(ModThunderAreaAction).GetField(
-				"thunderDamageMulti",
-				BindingFlags.NonPublic | BindingFlags.Instance);
-
-		return new CodeMatcher(instructions)
-			.Start()
-			.InsertAndAdvance(
-				new CodeInstruction(OpCodes.Ldarg_0),
-				new CodeInstruction(OpCodes.Ldarg_0),
-				new CodeInstruction(OpCodes.Ldfld, thunderDamageMulti),
-				new CodeInstruction(OpCodes.Ldc_R4, 0.35f),
-				new CodeInstruction(OpCodes.Add),
-				new CodeInstruction(OpCodes.Stfld, thunderDamageMulti))
-			.MatchForward(
-				false,
-				new CodeMatch(OpCodes.Ldc_R4, 1.75f))
-			.SetOperandAndAdvance(1.1f)
-			.InstructionEnumeration();
-	}*/
 }
 }
