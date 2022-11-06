@@ -40,7 +40,7 @@ public static class ModifyPowerupTree
 		List<string> noRepeatNames = new List<string>
 		{
 			//"ritual_name",
-			//"take_aim_name",
+			"take_aim_name",
 			"assassin_name",
 			"focal_point_name",
 			"light_weaponry_name",
