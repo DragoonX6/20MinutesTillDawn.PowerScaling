@@ -5,6 +5,7 @@ using System.Reflection;
 using HarmonyLib;
 
 using flanne;
+using flanne.PerkSystem;
 using flanne.PerkSystem.Actions;
 
 using UnityEngine;
@@ -87,6 +88,10 @@ public static class ModifyPowerupTree
 					(StatChange[])statChangesField.GetValue(p.powerup);
 
 				statChanges[0].value = 0.15f;
+			}
+			else if(GetPowerupKey(p.powerup) == "ritual_name")
+			{
+				NerfRitual(p.powerup);
 			}
 		});
 
@@ -201,11 +206,25 @@ public static class ModifyPowerupTree
 	}
 
 	// Nerf ritual to only give 0.1% per 10 kills
-	[HarmonyPatch(typeof(DamageBuffOnCurseKill), "Start")]
-	[HarmonyPrefix]
-	static void NerfCurse(ref float ___damageBuff)
+	static void NerfRitual(Powerup p)
 	{
-		___damageBuff = 0.001f;
+		FieldInfo effectsField = typeof(Powerup)
+			.GetField("effects", BindingFlags.NonPublic | BindingFlags.Instance);
+
+		PerkEffect[] perkEffects = effectsField.GetValue(p) as PerkEffect[];
+
+		FieldInfo actionField = typeof(PerkEffect)
+			.GetField("action", BindingFlags.NonPublic | BindingFlags.Instance);
+
+		ModStatAction action = actionField.GetValue(perkEffects[0]) as ModStatAction;
+
+		FieldInfo actionStatChangesField = typeof(ModStatAction)
+			.GetField("statChanges", BindingFlags.NonPublic | BindingFlags.Instance);
+
+		StatChange[] statChanges = actionStatChangesField
+			.GetValue(action) as StatChange[];
+
+		statChanges[0].value = 0.001f;
 	}
 
 	// Nerf electro mastery's area to 5% size increase. I honestly may have to
