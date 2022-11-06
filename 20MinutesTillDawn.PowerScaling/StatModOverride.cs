@@ -1,8 +1,7 @@
-using System.Collections.Generic;
-using System.Reflection;
-using System.Reflection.Emit;
 
 using HarmonyLib;
+using Mono.Cecil.Cil;
+using MonoMod.Cil;
 
 using flanne;
 
@@ -11,95 +10,94 @@ namespace _20MinutesTillDawn.PowerScaling
 public static class StatModOverride
 {
 	[HarmonyPatch(typeof(StatMod), "Modify")]
-	[HarmonyPrefix]
-	static bool PrefixModify(
-		ref float __result,
-		int ____flatBonus,
-		float ____multiplierBonus,
-		float baseValue)
+	[HarmonyILManipulator]
+	static void ManipulateModify(ILContext il)
 	{
-		__result = baseValue * ____multiplierBonus + ____flatBonus;
+		// return  baseValue * _multiplierBonus + _flatBonus;
 
-		return false;
+		ILCursor c = new ILCursor(il);
+
+		++c.Index;
+
+		c.Remove();
+
+		c.Index += 2;
+
+		c.RemoveRange(4);
 	}
 
 	[HarmonyPatch(typeof(StatMod), "ModifyInverse")]
-	[HarmonyPrefix]
-	static bool PrefixModifyInverse(
-		ref float __result,
-		int ____flatBonus,
-		float ____multiplierBonus,
-		float baseValue)
+	[HarmonyILManipulator]
+	static void ManipulateModifyInverse(ILContext il)
 	{
 		// 1 / (x * x * x) == 1 / x / x / x
-		__result = baseValue * (1f / ____multiplierBonus) + ____flatBonus;
+		// return baseValue * (1f / _multiplierBonus) + _flatBonus;
 
-		return false;
+		ILCursor c = new ILCursor(il);
+
+		c.GotoNext(MoveType.Before, x => x.MatchAdd());
+
+		c.Remove();
+		c.Emit(OpCodes.Div);
+
+		c.RemoveRange(2);
+		++c.Index;
+		c.Remove();
 	}
 
 	[HarmonyPatch(typeof(StatMod), nameof(StatMod.AddMultiplierBonus))]
-	[HarmonyTranspiler]
-	static IEnumerable<CodeInstruction> TranspileAddMultiplierBonus(
-		IEnumerable<CodeInstruction> instructions,
-		ILGenerator il)
+	[HarmonyILManipulator]
+	static void ManipulateAddMultiplierBonus(ILContext il)
 	{
-		Label label = il.DefineLabel();
+		// _multiplierBonus *= 1f + value;
 
-		CodeMatcher cm = new CodeMatcher(instructions)
-			.MatchForward(true, new CodeMatch(OpCodes.Ldfld))
-			.Advance(1)
-			.InsertAndAdvance(new CodeInstruction(OpCodes.Ldc_R4, 1f))
-			.Advance(2)
-			.InsertAndAdvance(new CodeInstruction(OpCodes.Mul))
-			.MatchForward(false, new CodeMatch(OpCodes.Brtrue))
-			.SetInstructionAndAdvance(
-				new CodeInstruction(OpCodes.Brtrue_S, label))
-			.MatchForward(false,
-				new CodeMatch(OpCodes.Ldarg_0),
-				new CodeMatch(OpCodes.Ldnull))
-			.SetInstructionAndAdvance(
-				new CodeInstruction(OpCodes.Ldarg_0) { labels = { label } });
+		ILCursor c = new ILCursor(il);
 
-		return cm.InstructionEnumeration();
+		c.GotoNext(MoveType.After, x => x.Match(OpCodes.Ldfld));
+
+		++c.Index;
+
+		c.Emit(OpCodes.Ldc_R4, 1f);
+
+		++c.Index;
+
+		c.Emit(OpCodes.Mul);
 	}
 
 	[HarmonyPatch(typeof(StatMod), nameof(StatMod.AddMultiplierReduction))]
-	[HarmonyTranspiler]
-	static IEnumerable<CodeInstruction> TranspileAddMultiplierReduction(
-		IEnumerable<CodeInstruction> instructions)
+	[HarmonyILManipulator]
+	static void ManipulateAddMultiplierReduction(ILContext il)
 	{
-		return new CodeMatcher(instructions)
-			.MatchForward(false, new CodeMatch(OpCodes.Ldfld))
-			.SetAndAdvance(
-				OpCodes.Ldfld,
-				typeof(StatMod).GetField(
-					"_multiplierBonus",
-					BindingFlags.NonPublic | BindingFlags.Instance))
-			.MatchForward(false, new CodeMatch(OpCodes.Stfld))
-			.SetAndAdvance(
-				OpCodes.Stfld,
-				typeof(StatMod).GetField(
-					"_multiplierBonus",
-					BindingFlags.NonPublic | BindingFlags.Instance))
-			.InstructionEnumeration();
+		// _multiplierReduction -> _multiplierBonus
+
+		ILCursor c = new ILCursor(il);
+
+		c.GotoNext(MoveType.Before, x => x.Match(OpCodes.Ldfld));
+		c.Remove();
+		c.Emit(
+			OpCodes.Ldfld,
+			AccessTools.DeclaredField(typeof(StatMod), "_multiplierBonus"));
+
+		c.GotoNext(MoveType.Before, x => x.Match(OpCodes.Stfld));
+		c.Remove();
+		c.Emit(
+			OpCodes.Stfld,
+			AccessTools.DeclaredField(typeof(StatMod), "_multiplierBonus"));
 	}
 
 	[HarmonyPatch(typeof(StatMod), MethodType.Constructor)]
-	[HarmonyTranspiler]
-	static IEnumerable<CodeInstruction> TranspileConstructor(
-		IEnumerable<CodeInstruction> instructions)
+	[HarmonyILManipulator]
+	static void ManipulateConstructor(ILContext il)
 	{
-		return new CodeMatcher(instructions)
-			.Start()
-			.InsertAndAdvance(
-				new CodeInstruction(OpCodes.Ldarg_0),
-				new CodeInstruction(OpCodes.Ldc_R4, 1f),
-				new CodeInstruction(
-					OpCodes.Stfld,
-					typeof(StatMod).GetField(
-						"_multiplierBonus",
-						BindingFlags.NonPublic | BindingFlags.Instance)))
-			.InstructionEnumeration();
+		// _multiplierBonus = 1;
+
+		ILCursor c = new ILCursor(il);
+
+		c.Emit(OpCodes.Ldarg_0);
+		c.Emit(OpCodes.Ldc_R4, 1f);
+		c.Emit(
+			OpCodes.Stfld,
+			AccessTools.DeclaredField(typeof(StatMod), "_multiplierBonus"));
 	}
 }
 }
