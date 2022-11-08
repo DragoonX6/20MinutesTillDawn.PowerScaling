@@ -129,9 +129,6 @@ public static class ModifyEndlessSpawnSessions
 				.GroupBy(kvp => kvp.Key)
 				.ToDictionary(kvp => kvp.Key, kvp => kvp.First().Value);
 
-			foreach(var kvp in monster)
-				Debug.Log($"Key: {kvp.Key}, Value: {kvp.Value}");
-
 			mapData.spawnSessions = new List<SpawnSession>();
 			mapData.spawnSessions.AddRange(GenerateInitialSessions());
 
