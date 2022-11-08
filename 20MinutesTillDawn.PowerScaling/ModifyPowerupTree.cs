@@ -14,9 +14,12 @@ namespace _20MinutesTillDawn.PowerScaling
 {
 public static class ModifyPowerupTree
 {
-	static FieldInfo statChangesField = null;
+	static FieldInfo statChangesField = AccessTools
+		.DeclaredField(typeof(Powerup), "statChanges");
 
-	static FieldInfo nameStringID = null;
+	static FieldInfo nameStringID = AccessTools
+		.DeclaredField(typeof(Powerup), "nameStrID");
+
 
 	[HarmonyPatch(
 		typeof(PowerupGenerator),
@@ -24,20 +27,6 @@ public static class ModifyPowerupTree
 	[HarmonyPostfix]
 	static void InitPowerupPoolPostfix(ref List<PowerupPoolItem> ___powerupPool)
 	{
-		if(nameStringID == null)
-		{
-			nameStringID = typeof(Powerup).GetField(
-				"nameStrID",
-				BindingFlags.Instance | BindingFlags.NonPublic);
-		}
-
-		if(statChangesField == null)
-		{
-			statChangesField = typeof(Powerup).GetField(
-				"statChanges",
-				BindingFlags.Instance | BindingFlags.NonPublic);
-		}
-
 		List<string> noRepeatNames = new List<string>
 		{
 			//"ritual_name",
