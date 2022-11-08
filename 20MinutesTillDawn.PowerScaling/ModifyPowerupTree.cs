@@ -78,20 +78,18 @@ public static class ModifyPowerupTree
 				.Where(n => n.Equals(GetPowerupKey(p.powerup)))
 				.Do(_ => p.numTimeRepeatable = int.MaxValue);
 
-			if(GetPowerupKey(p.powerup) == "sharpen_name")
+			switch(GetPowerupKey(p.powerup))
+			{
+			case "sharpen_name":
 			{
 				StatChange[] statChanges =
 					(StatChange[])statChangesField.GetValue(p.powerup);
 
 				statChanges[0].value = 0.15f;
-			}
-			else if(GetPowerupKey(p.powerup) == "ritual_name")
-			{
-				NerfRitual(p.powerup);
-			}
-			else if(GetPowerupKey(p.powerup) == "frostbite_name")
-			{
-				NerfFrostbite(p.powerup);
+			} break;
+			case "ritual_name": NerfRitual(p.powerup); break;
+			case "frostbite_name": NerfFrostbite(p.powerup); break;
+			case "shatter_name": NerfShatter(p.powerup); break;
 			}
 		});
 
@@ -267,6 +265,19 @@ public static class ModifyPowerupTree
 			new FrostbitePercentDamageAction(action);
 
 		actionField.SetValue(perkEffects[0], fpda);
+	}
+
+	static void NerfShatter(Powerup p)
+	{
+		PerkEffect[] perkEffects = effectsField.GetValue(p) as PerkEffect[];
+
+		ShatterFrozenAction action = actionField
+			.GetValue(perkEffects[0]) as ShatterFrozenAction;
+
+		FieldInfo shatterPercentDamage = AccessTools
+			.DeclaredField(typeof(ShatterFrozenAction), "shatterPercentDamage");
+
+		shatterPercentDamage.SetValue(action, 0.01f);
 	}
 }
 }
