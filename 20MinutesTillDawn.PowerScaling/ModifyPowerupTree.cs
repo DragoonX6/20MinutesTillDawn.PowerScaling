@@ -28,11 +28,19 @@ public static class ModifyPowerupTree
 	static FieldInfo actionField = AccessTools
 			.DeclaredField(typeof(PerkEffect), "action");
 
+	static string GetPowerupKey(Powerup powerup)
+	{
+		LocalizedString nameString =
+			(LocalizedString)nameStringID.GetValue(powerup);
+
+		return nameString.key;
+	}
+
 	[HarmonyPatch(
 		typeof(PowerupGenerator),
 		nameof(PowerupGenerator.InitPowerupPool))]
 	[HarmonyPostfix]
-	static void InitPowerupPoolPostfix(ref List<PowerupPoolItem> ___powerupPool)
+	static void InitPowerupPoolPostfix(List<PowerupPoolItem> ___powerupPool)
 	{
 		List<string> noRepeatNames = new List<string>
 		{
@@ -62,14 +70,6 @@ public static class ModifyPowerupTree
 
 		___powerupPool.Do(p =>
 		{
-			string GetPowerupKey(Powerup powerup)
-			{
-				LocalizedString nameString =
-					(LocalizedString)nameStringID.GetValue(powerup);
-
-				return nameString.key;
-			}
-
 			noRepeatNames
 				.Where(n => n.Equals(GetPowerupKey(p.powerup)))
 				.Do(_ => p.numTimeRepeatable = 1);
@@ -203,6 +203,31 @@ public static class ModifyPowerupTree
 		// kunoichi_name
 		// sword_and_shield_name
 		// titan_name
+	}
+
+	[HarmonyPatch(typeof(PowerupGenerator), "SetCharacterPowerupPool")]
+	[HarmonyPostfix]
+	static void SetCharacterPowerupPoolPostfix(
+		List<PowerupPoolItem> ___characterPool)
+	{
+		___characterPool.Do(p =>
+		{
+			switch(GetPowerupKey(p.powerup))
+			{
+			case "shana_perk_ascension_name":
+			{
+				p.numTimeRepeatable = 1;
+			} break;
+			case "shana_perk_specialize_name":
+			{
+				p.numTimeRepeatable = 5;
+			} break;
+			}
+		});
+
+		// shana_perk_ascension_name
+		// shana_perk_quick_learner_name
+		// shana_perk_specialize_name
 	}
 
 	// Nerf ritual to only give 0.1% per 10 kills
