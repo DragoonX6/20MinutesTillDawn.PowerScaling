@@ -10,6 +10,8 @@ using flanne.PerkSystem.Actions;
 
 using UnityEngine;
 
+using _20MinutesTillDawn.PowerScaling.Nerfs;
+
 namespace _20MinutesTillDawn.PowerScaling
 {
 public static class ModifyPowerupTree
@@ -20,6 +22,11 @@ public static class ModifyPowerupTree
 	static FieldInfo nameStringID = AccessTools
 		.DeclaredField(typeof(Powerup), "nameStrID");
 
+	static FieldInfo effectsField = AccessTools
+			.DeclaredField(typeof(Powerup), "effects");
+
+	static FieldInfo actionField = AccessTools
+			.DeclaredField(typeof(PerkEffect), "action");
 
 	[HarmonyPatch(
 		typeof(PowerupGenerator),
@@ -81,6 +88,10 @@ public static class ModifyPowerupTree
 			else if(GetPowerupKey(p.powerup) == "ritual_name")
 			{
 				NerfRitual(p.powerup);
+			}
+			else if(GetPowerupKey(p.powerup) == "frostbite_name")
+			{
+				NerfFrostbite(p.powerup);
 			}
 		});
 
@@ -197,18 +208,12 @@ public static class ModifyPowerupTree
 	// Nerf ritual to only give 0.1% per 10 kills
 	static void NerfRitual(Powerup p)
 	{
-		FieldInfo effectsField = typeof(Powerup)
-			.GetField("effects", BindingFlags.NonPublic | BindingFlags.Instance);
-
 		PerkEffect[] perkEffects = effectsField.GetValue(p) as PerkEffect[];
-
-		FieldInfo actionField = typeof(PerkEffect)
-			.GetField("action", BindingFlags.NonPublic | BindingFlags.Instance);
 
 		ModStatAction action = actionField.GetValue(perkEffects[0]) as ModStatAction;
 
-		FieldInfo actionStatChangesField = typeof(ModStatAction)
-			.GetField("statChanges", BindingFlags.NonPublic | BindingFlags.Instance);
+		FieldInfo actionStatChangesField = AccessTools
+			.DeclaredField(typeof(ModStatAction), "statChanges");
 
 		StatChange[] statChanges = actionStatChangesField
 			.GetValue(action) as StatChange[];
@@ -224,6 +229,19 @@ public static class ModifyPowerupTree
 		GameObject target, ref float ___thunderAOEMod)
 	{
 		___thunderAOEMod = 0.05f;
+	}
+
+	static void NerfFrostbite(Powerup p)
+	{
+		PerkEffect[] perkEffects = effectsField.GetValue(p) as PerkEffect[];
+
+		PercentDamageAction action = actionField
+			.GetValue(perkEffects[0]) as PercentDamageAction;
+
+		FrostbitePercentDamageAction fpda =
+			new FrostbitePercentDamageAction(action);
+
+		actionField.SetValue(perkEffects[0], fpda);
 	}
 }
 }
