@@ -87,9 +87,9 @@ public static class ModifyPowerupTree
 
 				statChanges[0].value = 0.15f;
 			} break;
-			case "ritual_name": NerfRitual(p.powerup); break;
+			case "ritual_name":    NerfRitual(p.powerup);    break;
 			case "frostbite_name": NerfFrostbite(p.powerup); break;
-			case "shatter_name": NerfShatter(p.powerup); break;
+			case "shatter_name":   NerfShatter(p.powerup);   break;
 			}
 		});
 
@@ -212,14 +212,8 @@ public static class ModifyPowerupTree
 		{
 			switch(GetPowerupKey(p.powerup))
 			{
-			case "shana_perk_ascension_name":
-			{
-				p.numTimeRepeatable = 1;
-			} break;
-			case "shana_perk_specialize_name":
-			{
-				p.numTimeRepeatable = 5;
-			} break;
+			case "shana_perk_ascension_name":  p.numTimeRepeatable = 1; break;
+			case "shana_perk_specialize_name": p.numTimeRepeatable = 5; break;
 			}
 		});
 
@@ -248,8 +242,7 @@ public static class ModifyPowerupTree
 	// even lower here.
 	[HarmonyPatch(typeof(ModThunderAreaAction), "Activate")]
 	[HarmonyPrefix]
-	static void NerfThunderSize(
-		GameObject target, ref float ___thunderAOEMod)
+	static void NerfThunderSize(GameObject target, ref float ___thunderAOEMod)
 	{
 		___thunderAOEMod = 0.05f;
 	}
