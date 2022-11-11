@@ -12,6 +12,7 @@ using flanne;
 
 using _20MinutesTillDawn.PowerScaling.Fixes;
 using _20MinutesTillDawn.PowerScaling.Interop;
+using _20MinutesTillDawn.PowerScaling.UI;
 
 namespace _20MinutesTillDawn.PowerScaling;
 
@@ -37,6 +38,7 @@ public class PowerScaling: BaseUnityPlugin
 
 		// This one needs to be patched at all times.
 		always.PatchAll(typeof(StatModCtorOverride));
+		always.PatchAll(typeof(BanishSystem));
 
 		SceneManager.sceneLoaded += OnSceneLoaded;
 
