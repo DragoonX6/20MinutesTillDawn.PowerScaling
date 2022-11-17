@@ -4,16 +4,15 @@ using System.Reflection.Emit;
 using HarmonyLib;
 
 using flanne;
-using flanne.Core;
 
 namespace _20MinutesTillDawn.PowerScaling.Interop
 {
 public static class BetterUIInterop
 {
-	const string fqtn = "BetterUI.InfoDisplay, BetterUI, "
+	const string fqtn = "BetterUI.StatsPanel, BetterUI, "
 		+ "Version=1.0.0.0, Culture=neutral, PublicKeyToken=null";
 
-	[HarmonyPatch(fqtn, "PauseStateEnterPostPatch")]
+	[HarmonyPatch(fqtn, "UpdatePanel")]
 	[HarmonyAfter("BetterUI")]
 	[HarmonyTranspiler]
 	static IEnumerable<CodeInstruction> PatchReloadSpeed(
@@ -29,13 +28,6 @@ public static class BetterUIInterop
 			.SetOperandAndAdvance(
 				AccessTools.DeclaredMethod(typeof(StatMod), "ModifyInverse"))
 			.InstructionEnumeration();
-	}
-
-	[HarmonyPatch(typeof(GameController), "Start")]
-	[HarmonyPostfix]
-	static void StartPosftix(GameController __instance)
-	{
-		__instance.powerupListUI.transform.SetSiblingIndex(0);
 	}
 }
 }
