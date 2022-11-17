@@ -9,8 +9,8 @@ using flanne;
 
 using UnityEngine;
 
-namespace _20MinutesTillDawn.PowerScaling.Fixes
-{
+namespace _20MinutesTillDawn.PowerScaling.Fixes;
+
 public static class FixDmgAndMSOnNotHurt
 {
 	// Rewrite AddMultiplierBonus calls to the equation of:
@@ -21,7 +21,7 @@ public static class FixDmgAndMSOnNotHurt
 	[HarmonyILManipulator]
 	static void FixOnHurt(ILContext il)
 	{
-		ILCursor c = new ILCursor(il);
+		ILCursor c = new(il);
 
 		while(c.TryGotoNext(
 			MoveType.Before,
@@ -59,5 +59,4 @@ public static class FixDmgAndMSOnNotHurt
 			c.Emit(OpCodes.Sub);
 		}
 	}
-}
 }

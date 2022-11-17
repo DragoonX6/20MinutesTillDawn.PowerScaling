@@ -12,8 +12,8 @@ using UnityEngine;
 
 using _20MinutesTillDawn.PowerScaling.Nerfs;
 
-namespace _20MinutesTillDawn.PowerScaling
-{
+namespace _20MinutesTillDawn.PowerScaling;
+
 public static class ModifyPowerupTree
 {
 	static FieldInfo statChangesField = AccessTools
@@ -42,7 +42,7 @@ public static class ModifyPowerupTree
 	[HarmonyPostfix]
 	static void InitPowerupPoolPostfix(List<PowerupPoolItem> ___powerupPool)
 	{
-		List<string> noRepeatNames = new List<string>
+		List<string> noRepeatNames = new()
 		{
 			//"ritual_name",
 			"take_aim_name",
@@ -53,7 +53,7 @@ public static class ModifyPowerupTree
 			"frostbite_name"
 		};
 
-		List<string> infRepeatNames = new List<string>
+		List<string> infRepeatNames = new()
 		{
 			"sniper_name",
 			"reaper_rounds",
@@ -272,5 +272,4 @@ public static class ModifyPowerupTree
 
 		shatterPercentDamage.SetValue(action, 0.01f);
 	}
-}
 }

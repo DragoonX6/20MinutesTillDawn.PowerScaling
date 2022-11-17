@@ -10,8 +10,8 @@ using HarmonyLib;
 using _20MinutesTillDawn.PowerScaling.Fixes;
 using _20MinutesTillDawn.PowerScaling.Interop;
 
-namespace _20MinutesTillDawn.PowerScaling
-{
+namespace _20MinutesTillDawn.PowerScaling;
+
 [BepInPlugin(
 	"20MinutesTillDawn.PowerScaling",
 	"20 Minutes Till Dawn Power Scaling Mod",
@@ -20,7 +20,7 @@ namespace _20MinutesTillDawn.PowerScaling
 [BepInDependency("BetterUI", BepInDependency.DependencyFlags.SoftDependency)]
 public class PowerScaling: BaseUnityPlugin
 {
-	private Harmony instance = new Harmony("PowerScaling");
+	private Harmony instance = new("PowerScaling");
 
 	public void Awake()
 	{
@@ -47,5 +47,4 @@ public class PowerScaling: BaseUnityPlugin
 		Logger.LogInfo(scene.name);
 		ModifyEndlessSpawnSessions.Reset();
 	}
-}
 }

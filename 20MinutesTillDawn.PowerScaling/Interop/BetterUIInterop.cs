@@ -5,8 +5,8 @@ using HarmonyLib;
 
 using flanne;
 
-namespace _20MinutesTillDawn.PowerScaling.Interop
-{
+namespace _20MinutesTillDawn.PowerScaling.Interop;
+
 public static class BetterUIInterop
 {
 	const string fqtn = "BetterUI.StatsPanel, BetterUI, "
@@ -29,5 +29,4 @@ public static class BetterUIInterop
 				AccessTools.DeclaredMethod(typeof(StatMod), "ModifyInverse"))
 			.InstructionEnumeration();
 	}
-}
 }

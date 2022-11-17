@@ -7,8 +7,8 @@ using flanne.PowerupSystem;
 using flanne.PerkSystem.Actions;
 using flanne.Player.Buffs;
 
-namespace _20MinutesTillDawn.PowerScaling.Fixes
-{
+namespace _20MinutesTillDawn.PowerScaling.Fixes;
+
 public static class FixupAddMultiplierBonus
 {
 	[HarmonyPatch(typeof(TemporaryStatBuff), "OnUnattach")]
@@ -18,7 +18,7 @@ public static class FixupAddMultiplierBonus
 	[HarmonyILManipulator]
 	static void FixupCallsite(ILContext il)
 	{
-		ILCursor c = new ILCursor(il);
+		ILCursor c = new(il);
 
 		while(c.TryGotoNext(
 			MoveType.Before,
@@ -39,5 +39,4 @@ public static class FixupAddMultiplierBonus
 			c.Emit(OpCodes.Sub);
 		}
 	}
-}
 }

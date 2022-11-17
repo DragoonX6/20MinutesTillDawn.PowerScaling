@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using System.Reflection;
 
@@ -9,11 +8,11 @@ using flanne.PerkSystem.Actions;
 
 using UnityEngine;
 
-namespace _20MinutesTillDawn.PowerScaling.Nerfs
-{
+namespace _20MinutesTillDawn.PowerScaling.Nerfs;
+
 public class FrostbitePercentDamageAction: PercentDamageAction
 {
-	private HashSet<Health> targets = new HashSet<Health>();
+	private HashSet<Health> targets = new();
 
 	private bool subscribed = false;
 
@@ -45,9 +44,7 @@ public class FrostbitePercentDamageAction: PercentDamageAction
 		{
 			// We have to this in here, since the object gets copied at some
 			// point elsewhere. So we have to subscribe for each copy...
-			this.AddObserver(
-				new Action<object, object>(this.RemoveTarget),
-				Health.DeathEvent);
+			this.AddObserver(new(this.RemoveTarget), Health.DeathEvent);
 
 			subscribed = true;
 		}
@@ -70,5 +67,4 @@ public class FrostbitePercentDamageAction: PercentDamageAction
 		Health target = sender as Health;
 		targets.Remove(target);
 	}
-}
 }

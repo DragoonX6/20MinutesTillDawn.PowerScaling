@@ -4,8 +4,8 @@ using flanne;
 
 using UnityEngine;
 
-namespace _20MinutesTillDawn.PowerScaling
-{
+namespace _20MinutesTillDawn.PowerScaling;
+
 public static class CapStats
 {
 	// Should probably cap electro mastery
@@ -16,5 +16,4 @@ public static class CapStats
 	{
 		__result.projectileSpeed = Mathf.Min(__result.projectileSpeed, 100f);
 	}
-}
 }

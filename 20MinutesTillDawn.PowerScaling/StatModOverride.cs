@@ -5,8 +5,8 @@ using MonoMod.Cil;
 
 using flanne;
 
-namespace _20MinutesTillDawn.PowerScaling
-{
+namespace _20MinutesTillDawn.PowerScaling;
+
 public static class StatModOverride
 {
 	[HarmonyPatch(typeof(StatMod), "Modify")]
@@ -15,7 +15,7 @@ public static class StatModOverride
 	{
 		// return  baseValue * _multiplierBonus + _flatBonus;
 
-		ILCursor c = new ILCursor(il);
+		ILCursor c = new(il);
 
 		++c.Index;
 
@@ -33,7 +33,7 @@ public static class StatModOverride
 		// 1 / (x * x * x) == 1 / x / x / x
 		// return baseValue * (1f / _multiplierBonus) + _flatBonus;
 
-		ILCursor c = new ILCursor(il);
+		ILCursor c = new(il);
 
 		c.GotoNext(MoveType.Before, x => x.MatchAdd());
 
@@ -51,7 +51,7 @@ public static class StatModOverride
 	{
 		// _multiplierBonus *= 1f + value;
 
-		ILCursor c = new ILCursor(il);
+		ILCursor c = new(il);
 
 		c.GotoNext(MoveType.After, x => x.Match(OpCodes.Ldfld));
 
@@ -70,7 +70,7 @@ public static class StatModOverride
 	{
 		// _multiplierReduction -> _multiplierBonus
 
-		ILCursor c = new ILCursor(il);
+		ILCursor c = new(il);
 
 		c.GotoNext(MoveType.Before, x => x.Match(OpCodes.Ldfld));
 		c.Remove();
@@ -91,7 +91,7 @@ public static class StatModOverride
 	{
 		// _multiplierBonus = 1;
 
-		ILCursor c = new ILCursor(il);
+		ILCursor c = new(il);
 
 		c.Emit(OpCodes.Ldarg_0);
 		c.Emit(OpCodes.Ldc_R4, 1f);
@@ -99,5 +99,4 @@ public static class StatModOverride
 			OpCodes.Stfld,
 			AccessTools.DeclaredField(typeof(StatMod), "_multiplierBonus"));
 	}
-}
 }

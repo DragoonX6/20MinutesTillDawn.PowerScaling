@@ -5,8 +5,8 @@ using UnityEngine;
 using flanne;
 using flanne.PowerupSystems;
 
-namespace _20MinutesTillDawn.PowerScaling.Fixes
-{
+namespace _20MinutesTillDawn.PowerScaling.Fixes;
+
 public static class FixReloadRateUpOnKill
 {
 	// Share the stacks between multiples of the upgrades
@@ -49,5 +49,4 @@ public static class FixReloadRateUpOnKill
 
 		return false;
 	}
-}
 }
