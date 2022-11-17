@@ -16,17 +16,8 @@ namespace _20MinutesTillDawn.PowerScaling;
 
 public static class ModifyPowerupTree
 {
-	static FieldInfo statChangesField = AccessTools
-		.DeclaredField(typeof(Powerup), "statChanges");
-
 	static FieldInfo nameStringID = AccessTools
 		.DeclaredField(typeof(Powerup), "nameStrID");
-
-	static FieldInfo effectsField = AccessTools
-			.DeclaredField(typeof(Powerup), "effects");
-
-	static FieldInfo actionField = AccessTools
-			.DeclaredField(typeof(PerkEffect), "action");
 
 	static string GetPowerupKey(Powerup powerup)
 	{
@@ -82,10 +73,10 @@ public static class ModifyPowerupTree
 			{
 			case "sharpen_name":
 			{
-				StatChange[] statChanges =
-					(StatChange[])statChangesField.GetValue(p.powerup);
-
-				statChanges[0].value = 0.15f;
+				Traverse
+					.Create(p.powerup)
+					.Field("statChanges")
+					.GetValue<StatChange[]>()[0].value = 0.15f;
 			} break;
 			case "ritual_name":    NerfRitual(p.powerup);    break;
 			case "frostbite_name": NerfFrostbite(p.powerup); break;
@@ -225,17 +216,16 @@ public static class ModifyPowerupTree
 	// Nerf ritual to only give 0.1% per 10 kills
 	static void NerfRitual(Powerup p)
 	{
-		PerkEffect[] perkEffects = effectsField.GetValue(p) as PerkEffect[];
+		PerkEffect[] effects = Traverse
+			.Create(p)
+			.Field("effects")
+			.GetValue<PerkEffect[]>();
 
-		ModStatAction action = actionField.GetValue(perkEffects[0]) as ModStatAction;
-
-		FieldInfo actionStatChangesField = AccessTools
-			.DeclaredField(typeof(ModStatAction), "statChanges");
-
-		StatChange[] statChanges = actionStatChangesField
-			.GetValue(action) as StatChange[];
-
-		statChanges[0].value = 0.001f;
+		Traverse
+			.Create(effects[0])
+			.Field("action")
+			.Field("statChanges")
+			.GetValue<StatChange[]>()[0].value = 0.001f;
 	}
 
 	// Nerf electro mastery's area to 5% size increase. I honestly may have to
@@ -249,27 +239,36 @@ public static class ModifyPowerupTree
 
 	static void NerfFrostbite(Powerup p)
 	{
-		PerkEffect[] perkEffects = effectsField.GetValue(p) as PerkEffect[];
+		PerkEffect[] effects = Traverse
+			.Create(p)
+			.Field("effects")
+			.GetValue<PerkEffect[]>();
 
-		PercentDamageAction action = actionField
-			.GetValue(perkEffects[0]) as PercentDamageAction;
+		PercentDamageAction action = Traverse
+			.Create(effects[0])
+			.Field("action")
+			.GetValue<PercentDamageAction>();
 
 		FrostbitePercentDamageAction fpda =
 			new FrostbitePercentDamageAction(action);
 
-		actionField.SetValue(perkEffects[0], fpda);
+		Traverse
+			.Create(effects[0])
+			.Field("action")
+			.SetValue(fpda);
 	}
 
 	static void NerfShatter(Powerup p)
 	{
-		PerkEffect[] perkEffects = effectsField.GetValue(p) as PerkEffect[];
+		PerkEffect[] effects = Traverse
+			.Create(p)
+			.Field("effects")
+			.GetValue<PerkEffect[]>();
 
-		ShatterFrozenAction action = actionField
-			.GetValue(perkEffects[0]) as ShatterFrozenAction;
-
-		FieldInfo shatterPercentDamage = AccessTools
-			.DeclaredField(typeof(ShatterFrozenAction), "shatterPercentDamage");
-
-		shatterPercentDamage.SetValue(action, 0.01f);
+		Traverse
+			.Create(effects[0])
+			.Field("action")
+			.Field("shatterPercentDamage")
+			.SetValue(0.01f);
 	}
 }
