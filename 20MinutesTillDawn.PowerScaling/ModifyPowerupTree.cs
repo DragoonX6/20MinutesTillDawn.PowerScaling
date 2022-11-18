@@ -90,6 +90,7 @@ public static class ModifyPowerupTree
 			case "shatter_name":          NerfShatter(p.powerup);       break;
 			case "aero_mastery_name":     BuffAeroMastery(p.powerup);   break;
 			case "windborne_name":        NerfWindBorne(p.powerup);     break;
+			case "eye_of_the_storm_name": BuffEyeOfTheStorm(p.powerup); break;
 
 			case "intense_burn_name":
 			case "electro_mastery_name":
@@ -382,5 +383,14 @@ public static class ModifyPowerupTree
 		effectTrav.Field("action").SetValue(action);
 
 		InsertStackedEffect(p, effect);
+	}
+
+	// Buff eye of the storm to give 5% damage.
+	static void BuffEyeOfTheStorm(Powerup p)
+	{
+		MultiplierDamageMod mod = new();
+		Traverse.Create(mod).Field("multiplier").SetValue(1.05f);
+
+		ReplaceDamageMod(p, mod);
 	}
 }
