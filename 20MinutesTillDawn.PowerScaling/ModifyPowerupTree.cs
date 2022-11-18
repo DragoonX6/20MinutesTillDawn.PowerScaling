@@ -41,7 +41,11 @@ public static class ModifyPowerupTree
 			"focal_point_name",
 			"light_weaponry_name",
 			"kill_clip_name",
-			"frostbite_name"
+			"frostbite_name",
+			"evasive_name",
+			"nimble_name",
+			"tiny_name",
+			"reflex_name"
 		};
 
 		List<string> infRepeatNames = new()
