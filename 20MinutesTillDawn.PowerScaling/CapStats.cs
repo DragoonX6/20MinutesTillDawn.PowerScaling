@@ -1,3 +1,5 @@
+using System;
+
 using HarmonyLib;
 using Mono.Cecil.Cil;
 using MonoMod.Cil;
@@ -32,5 +34,27 @@ public static class CapStats
 			x => x.MatchLdcR4(0.0f));
 
 		c.RemoveRange(16);
+	}
+
+	// Caps movement speed multiplier to 10
+	[HarmonyPatch(typeof(PlayerController), "MovePlayer")]
+	[HarmonyILManipulator]
+	static void CapMovementSpeed(ILContext il)
+	{
+		ILCursor c = new(il);
+
+		c.GotoNext(
+			MoveType.After,
+			x => x.MatchCallvirt(
+				AccessTools.DeclaredMethod(typeof(StatMod), "Modify")));
+
+		c.Emit(OpCodes.Ldc_R4, 0f);
+		c.Emit(OpCodes.Ldc_R4, 10f);
+		c.Emit(
+			OpCodes.Call,
+			AccessTools.DeclaredMethod(
+				typeof(Mathf),
+				"Clamp",
+				new Type[]{ typeof(float), typeof(float), typeof(float) }));
 	}
 }
