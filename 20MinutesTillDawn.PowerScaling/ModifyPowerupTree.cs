@@ -91,6 +91,7 @@ public static class ModifyPowerupTree
 			case "aero_mastery_name":     BuffAeroMastery(p.powerup);   break;
 			case "windborne_name":        NerfWindBorne(p.powerup);     break;
 			case "eye_of_the_storm_name": BuffEyeOfTheStorm(p.powerup); break;
+			case "holy_arts_name":        BuffHolyArts(p.powerup);      break;
 
 			case "intense_burn_name":
 			case "electro_mastery_name":
@@ -402,5 +403,40 @@ public static class ModifyPowerupTree
 		__result = new MultValueModifier(
 			1,
 			1f + ((float)PlayerController.Instance.playerHealth.hp * 0.01f));
+	}
+
+	// Buff holy arts to do 10% health damage, 1% on boss enemies, adjusted by
+	// holy might.
+	static void BuffHolyArts(Powerup p)
+	{
+		PerkEffect[] effects = Traverse
+			.Create(p)
+			.Field("effects")
+			.GetValue<PerkEffect[]>();
+
+		PercentDamageAction action = new();
+		Traverse actionTrav = Traverse.Create(action);
+		actionTrav.Field("damageType").SetValue(DamageType.Smite);
+		actionTrav.Field("percentDamage").SetValue(0.1f);
+		actionTrav.Field("championPercentDamage").SetValue(0.01f);
+
+		Traverse
+			.Create(effects[0])
+			.Field("action")
+			.Field("action")
+			.Field("action")
+			.SetValue(action);
+
+		PerkEffect[] stackedEffects = Traverse
+			.Create(p)
+			.Field("stackedEffects")
+			.GetValue<PerkEffect[]>();
+
+		Traverse
+			.Create(stackedEffects[0])
+			.Field("action")
+			.Field("action")
+			.Field("action")
+			.SetValue(action);
 	}
 }
