@@ -272,6 +272,7 @@ public static class ModifyPowerupTree
 		___thunderAOEMod = 0.05f;
 	}
 
+	// Nerf frostbite to only proc once per enemy.
 	static void NerfFrostbite(Powerup p)
 	{
 		PerkEffect[] effects = Traverse
@@ -293,6 +294,7 @@ public static class ModifyPowerupTree
 			.SetValue(fpda);
 	}
 
+	// Nerf shatter to only do 1% damage.
 	static void NerfShatter(Powerup p)
 	{
 		PerkEffect[] effects = Traverse
