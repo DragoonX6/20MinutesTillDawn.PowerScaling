@@ -179,6 +179,16 @@ public static class ModifyPowerupTree
 		// justice_name
 		// holy_might_name
 
+		// aero_magic_name
+		// eye_of_the_storm_name
+		// windborne_name
+		// aero_mastery_name
+
+		// evasive_name
+		// nimble_name
+		// tiny_name
+		// reflex_name
+
 		// Synergies
 		// death_rounds_name
 		// frost_fire_name
