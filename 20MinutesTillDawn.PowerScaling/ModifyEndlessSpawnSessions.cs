@@ -152,7 +152,7 @@ public static class ModifyEndlessSpawnSessions
 
 		while(result.MoveNext())
 		{
-			playerXP.xpMultiplier.AddMultiplierBonus(1.2f);
+			playerXP.xpMultiplier.AddMultiplierBonus(1.1f);
 
 			// *2 lags the game lol
 			___hordeSpawner.spawnRateMulitplier *= 1.25f;
