@@ -82,6 +82,7 @@ public static class ModifyPowerupTree
 			case "frostbite_name": NerfFrostbite(p.powerup); break;
 			case "shatter_name":   NerfShatter(p.powerup);   break;
 			case "intense_burn_name":
+			case "electro_mastery_name":
 			{
 				AdjustMultiplierDamage(p.powerup, 1.1f);
 			} break;
