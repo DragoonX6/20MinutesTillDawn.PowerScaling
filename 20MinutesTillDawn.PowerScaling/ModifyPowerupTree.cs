@@ -7,6 +7,7 @@ using HarmonyLib;
 using flanne;
 using flanne.PerkSystem;
 using flanne.PerkSystem.Actions;
+using flanne.Player.Buffs;
 
 using UnityEngine;
 
@@ -82,9 +83,12 @@ public static class ModifyPowerupTree
 					.Field("statChanges")
 					.GetValue<StatChange[]>()[0].value = 0.15f;
 			} break;
-			case "ritual_name":    NerfRitual(p.powerup);    break;
-			case "frostbite_name": NerfFrostbite(p.powerup); break;
-			case "shatter_name":   NerfShatter(p.powerup);   break;
+
+			case "ritual_name":           NerfRitual(p.powerup);        break;
+			case "frostbite_name":        NerfFrostbite(p.powerup);     break;
+			case "shatter_name":          NerfShatter(p.powerup);       break;
+			case "aero_mastery_name":     BuffAeroMastery(p.powerup);   break;
+
 			case "intense_burn_name":
 			case "electro_mastery_name":
 			{
@@ -229,6 +233,24 @@ public static class ModifyPowerupTree
 			.SetValue(multiplier);
 	}
 
+	static void ReplaceDamageMod(
+		Powerup p,
+		IDamageModifier modifier,
+		int index = 0)
+	{
+		PerkEffect[] effects = Traverse
+			.Create(p)
+			.Field("effects")
+			.GetValue<PerkEffect[]>();
+
+		Traverse
+			.Create(effects[index])
+			.Field("action")
+			.Field("buff")
+			.Field("modifier")
+			.SetValue(modifier);
+	}
+
 	[HarmonyPatch(typeof(PowerupGenerator), "SetCharacterPowerupPool")]
 	[HarmonyPostfix]
 	static void SetCharacterPowerupPoolPostfix(
@@ -307,5 +329,14 @@ public static class ModifyPowerupTree
 			.Field("action")
 			.Field("shatterPercentDamage")
 			.SetValue(0.01f);
+	}
+
+	// Buff AeroMastery to add 15% damage.
+	static void BuffAeroMastery(Powerup p)
+	{
+		MultiplierDamageMod mod = new();
+		Traverse.Create(mod).Field("multiplier").SetValue(1.15f);
+
+		ReplaceDamageMod(p, mod);
 	}
 }
