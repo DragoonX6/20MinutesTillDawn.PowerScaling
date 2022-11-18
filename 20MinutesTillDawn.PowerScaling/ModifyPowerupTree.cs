@@ -7,6 +7,7 @@ using HarmonyLib;
 using flanne;
 using flanne.PerkSystem;
 using flanne.PerkSystem.Actions;
+using flanne.PerkSystem.Triggers;
 using flanne.Player.Buffs;
 
 using UnityEngine;
@@ -88,6 +89,7 @@ public static class ModifyPowerupTree
 			case "frostbite_name":        NerfFrostbite(p.powerup);     break;
 			case "shatter_name":          NerfShatter(p.powerup);       break;
 			case "aero_mastery_name":     BuffAeroMastery(p.powerup);   break;
+			case "windborne_name":        NerfWindBorne(p.powerup);     break;
 
 			case "intense_burn_name":
 			case "electro_mastery_name":
@@ -251,6 +253,26 @@ public static class ModifyPowerupTree
 			.SetValue(modifier);
 	}
 
+	static void InsertStackedEffect(Powerup p, PerkEffect effect)
+	{
+		PerkEffect[] oldEffects = Traverse
+			.Create(p)
+			.Field("stackedEffects")
+			.GetValue<PerkEffect[]>();
+
+		List<PerkEffect> newEffects = new();
+
+		if(oldEffects != null)
+			newEffects.AddRange(oldEffects);
+
+		newEffects.Add(effect);
+
+		Traverse
+			.Create(p)
+			.Field("stackedEffects")
+			.SetValue(newEffects.ToArray());
+	}
+
 	[HarmonyPatch(typeof(PowerupGenerator), "SetCharacterPowerupPool")]
 	[HarmonyPostfix]
 	static void SetCharacterPowerupPoolPostfix(
@@ -338,5 +360,27 @@ public static class ModifyPowerupTree
 		Traverse.Create(mod).Field("multiplier").SetValue(1.15f);
 
 		ReplaceDamageMod(p, mod);
+	}
+
+	// Nerf windborne to give 10% damage after the first stack.
+	static void NerfWindBorne(Powerup p)
+	{
+		MultiplierDamageMod mod = new();
+		Traverse.Create(mod).Field("multiplier").SetValue(1.10f);
+
+		DamageBuff buff = new();
+		Traverse buffTrav = Traverse.Create(buff);
+		buffTrav.Field("damageType").SetValue(DamageType.Gale);
+		buffTrav.Field("modifier").SetValue(mod);
+
+		ApplyPlayerBuffAction action = new();
+		Traverse.Create(action).Field("buff").SetValue(buff);
+
+		PerkEffect effect = new();
+		Traverse effectTrav = Traverse.Create(effect);
+		effectTrav.Field("trigger").SetValue(new InstantTrigger());
+		effectTrav.Field("action").SetValue(action);
+
+		InsertStackedEffect(p, effect);
 	}
 }
