@@ -81,6 +81,10 @@ public static class ModifyPowerupTree
 			case "ritual_name":    NerfRitual(p.powerup);    break;
 			case "frostbite_name": NerfFrostbite(p.powerup); break;
 			case "shatter_name":   NerfShatter(p.powerup);   break;
+			case "intense_burn_name":
+			{
+				AdjustMultiplierDamage(p.powerup, 1.1f);
+			} break;
 			}
 		});
 
@@ -202,6 +206,22 @@ public static class ModifyPowerupTree
 		// kunoichi_name
 		// sword_and_shield_name
 		// titan_name
+	}
+
+	static void AdjustMultiplierDamage(Powerup p, float multiplier)
+	{
+		PerkEffect[] effects = Traverse
+			.Create(p)
+			.Field("effects")
+			.GetValue<PerkEffect[]>();
+
+		Traverse
+			.Create(effects[0])
+			.Field("action")
+			.Field("buff")
+			.Field("modifier")
+			.Field("multiplier")
+			.SetValue(multiplier);
 	}
 
 	[HarmonyPatch(typeof(PowerupGenerator), "SetCharacterPowerupPool")]
