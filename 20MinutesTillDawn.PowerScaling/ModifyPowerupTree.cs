@@ -62,7 +62,6 @@ public static class ModifyPowerupTree
 			"electro_mastery_name",
 			"intense_burn_name",
 			"armed_and_ready_name",
-			"holy_might_name",
 			"dual_wield_name"
 		};
 
