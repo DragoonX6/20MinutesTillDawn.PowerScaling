@@ -395,14 +395,14 @@ public static class ModifyPowerupTree
 		ReplaceDamageMod(p, mod);
 	}
 
-	// Buff Holy Might to add 1% extra smite damage for every HP.
+	// Buff Holy Might to add 5% extra smite damage for every HP.
 	[HarmonyPatch(typeof(AddHPToDamageMod), nameof(AddHPToDamageMod.GetMod))]
 	[HarmonyPostfix]
 	static void BuffHolyMight(ref ValueModifier __result)
 	{
 		__result = new MultValueModifier(
 			1,
-			1f + ((float)PlayerController.Instance.playerHealth.hp * 0.01f));
+			1f + ((float)PlayerController.Instance.playerHealth.hp * 0.05f));
 	}
 
 	// Buff holy arts to do 10% health damage, 1% on boss enemies, adjusted by
