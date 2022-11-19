@@ -399,7 +399,7 @@ public static class ModifyPowerupTree
 	// Buff Holy Might to add 1% extra smite damage for every HP.
 	[HarmonyPatch(typeof(AddHPToDamageMod), nameof(AddHPToDamageMod.GetMod))]
 	[HarmonyPostfix]
-	static void BuffHolyMight(ValueModifier __result)
+	static void BuffHolyMight(ref ValueModifier __result)
 	{
 		__result = new MultValueModifier(
 			1,
