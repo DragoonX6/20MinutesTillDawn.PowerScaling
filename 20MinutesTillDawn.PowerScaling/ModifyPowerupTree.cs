@@ -402,7 +402,7 @@ public static class ModifyPowerupTree
 	{
 		__result = new MultValueModifier(
 			1,
-			1f + ((float)PlayerController.Instance.playerHealth.hp * 0.05f));
+			1f + ((float)PlayerController.Instance.playerHealth.hp * 0.025f));
 	}
 
 	// Buff holy arts to do 10% health damage, 1% on boss enemies, adjusted by
