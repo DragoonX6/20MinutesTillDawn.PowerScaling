@@ -343,6 +343,8 @@ public static class ModifyPowerupTree
 	// Nerf shatter to only do 1% damage.
 	static void NerfShatter(Powerup p)
 	{
+		const float damage = 0.01f;
+
 		PerkEffect[] effects = Traverse
 			.Create(p)
 			.Field("effects")
@@ -352,7 +354,18 @@ public static class ModifyPowerupTree
 			.Create(effects[0])
 			.Field("action")
 			.Field("shatterPercentDamage")
-			.SetValue(0.01f);
+			.SetValue(damage);
+
+		effects = Traverse
+			.Create(p)
+			.Field("stackedEffects")
+			.GetValue<PerkEffect[]>();
+
+		Traverse
+			.Create(effects[0])
+			.Field("action")
+			.Field("shatterPercentDamage")
+			.SetValue(damage);
 	}
 
 	// Buff AeroMastery to add 15% damage.
