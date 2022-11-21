@@ -409,6 +409,8 @@ public static class ModifyPowerupTree
 	// holy might.
 	static void BuffHolyArts(Powerup p)
 	{
+		const float range = 8f;
+
 		PerkEffect[] effects = Traverse
 			.Create(p)
 			.Field("effects")
@@ -425,7 +427,7 @@ public static class ModifyPowerupTree
 			.Field("action")
 			.Field("action");
 
-		actionTrav.Field("range").SetValue(8f);
+		actionTrav.Field("range").SetValue(range);
 		actionTrav.Field("action").SetValue(action);
 
 		Traverse
@@ -433,7 +435,7 @@ public static class ModifyPowerupTree
 			.Field("action")
 			.Field("action")
 			.Field("range")
-			.SetValue(8f);
+			.SetValue(range);
 
 		PerkEffect[] stackedEffects = Traverse
 			.Create(p)
@@ -445,7 +447,7 @@ public static class ModifyPowerupTree
 			.Field("action")
 			.Field("action");
 
-		actionTrav.Field("range").SetValue(8f);
+		actionTrav.Field("range").SetValue(range);
 		actionTrav.Field("action").SetValue(action);
 	}
 }
