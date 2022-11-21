@@ -420,23 +420,32 @@ public static class ModifyPowerupTree
 		actionTrav.Field("percentDamage").SetValue(0.1f);
 		actionTrav.Field("championPercentDamage").SetValue(0.01f);
 
-		Traverse
+		actionTrav = Traverse
 			.Create(effects[0])
 			.Field("action")
+			.Field("action");
+
+		actionTrav.Field("range").SetValue(8f);
+		actionTrav.Field("action").SetValue(action);
+
+		Traverse
+			.Create(effects[2])
 			.Field("action")
 			.Field("action")
-			.SetValue(action);
+			.Field("range")
+			.SetValue(8f);
 
 		PerkEffect[] stackedEffects = Traverse
 			.Create(p)
 			.Field("stackedEffects")
 			.GetValue<PerkEffect[]>();
 
-		Traverse
+		actionTrav = Traverse
 			.Create(stackedEffects[0])
 			.Field("action")
-			.Field("action")
-			.Field("action")
-			.SetValue(action);
+			.Field("action");
+
+		actionTrav.Field("range").SetValue(8f);
+		actionTrav.Field("action").SetValue(action);
 	}
 }
