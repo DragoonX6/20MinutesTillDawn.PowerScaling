@@ -18,6 +18,7 @@ namespace _20MinutesTillDawn.PowerScaling;
 	"0.15.0")]
 [BepInProcess("MinutesTillDawn.exe")]
 [BepInDependency("BetterUI", BepInDependency.DependencyFlags.SoftDependency)]
+[BepInDependency("20MinutesTillDawn.Fixes", "3.0.0.0")]
 public class PowerScaling: BaseUnityPlugin
 {
 	private Harmony instance = new("PowerScaling");
