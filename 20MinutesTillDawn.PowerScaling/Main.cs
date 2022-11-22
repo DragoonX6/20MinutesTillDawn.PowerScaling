@@ -1,11 +1,14 @@
 using System.Linq;
 
-using UnityEngine.SceneManagement;
-
 using BepInEx;
 using BepInEx.Bootstrap;
+using BepInEx.Logging;
 
 using HarmonyLib;
+
+using UnityEngine.SceneManagement;
+
+using flanne;
 
 using _20MinutesTillDawn.PowerScaling.Fixes;
 using _20MinutesTillDawn.PowerScaling.Interop;
@@ -22,9 +25,66 @@ namespace _20MinutesTillDawn.PowerScaling;
 public class PowerScaling: BaseUnityPlugin
 {
 	private Harmony instance = new("PowerScaling");
+	private Harmony always = new("PowerScaling.Always");
+
+	public static ManualLogSource Log = null;
+
+	private bool patched = false;
 
 	public void Awake()
 	{
+		Log = Logger;
+
+		// This one needs to be patched at all times.
+		always.PatchAll(typeof(StatModCtorOverride));
+
+		SceneManager.sceneLoaded += OnSceneLoaded;
+
+		Logger.LogInfo("Power scaling mod initialized.");
+	}
+
+	public void OnSceneLoaded(Scene scene, LoadSceneMode sceneMode)
+	{
+		Logger.LogDebug(scene.name);
+
+		if(scene.name != "Battle")
+		{
+			Unpatch();
+			return;
+		}
+
+		if(SelectedMap.MapData != null && !SelectedMap.MapData.endless)
+		{
+			Unpatch();
+			return;
+		}
+
+		Patch();
+
+		ModifyEndlessSpawnSessions.Reset();
+	}
+
+	private void Unpatch()
+	{
+		if(!patched)
+			return;
+
+		Logger.LogDebug("Unpatching...");
+
+		instance.UnpatchSelf();
+
+		Logger.LogDebug("Unpatched.");
+
+		patched = false;
+	}
+
+	private void Patch()
+	{
+		if(patched)
+			return;
+
+		Logger.LogDebug("Patching...");
+
 		instance.PatchAll(typeof(StatModOverride));
 		instance.PatchAll(typeof(FixDmgAndMSOnNotHurt));
 		instance.PatchAll(typeof(FixReloadRateUpOnKill));
@@ -37,15 +97,8 @@ public class PowerScaling: BaseUnityPlugin
 		if(Chainloader.PluginInfos.Where(kv => kv.Key == "BetterUI").Any())
 			instance.PatchAll(typeof(BetterUIInterop));
 
-		Logger.LogInfo("Patching done.");
+		Logger.LogDebug("Patched.");
 
-		SceneManager.sceneLoaded += OnSceneLoaded;
-		Logger.LogInfo("Power scaling mod initialized.");
-	}
-
-	public void OnSceneLoaded(Scene scene, LoadSceneMode sceneMode)
-	{
-		Logger.LogInfo(scene.name);
-		ModifyEndlessSpawnSessions.Reset();
+		patched = true;
 	}
 }

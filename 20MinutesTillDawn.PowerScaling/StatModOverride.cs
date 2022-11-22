@@ -1,4 +1,3 @@
-
 using HarmonyLib;
 using Mono.Cecil.Cil;
 using MonoMod.Cil;
@@ -84,19 +83,32 @@ public static class StatModOverride
 			OpCodes.Stfld,
 			AccessTools.DeclaredField(typeof(StatMod), "_multiplierBonus"));
 	}
+}
 
+public static class StatModCtorOverride
+{
 	[HarmonyPatch(typeof(StatMod), MethodType.Constructor)]
 	[HarmonyILManipulator]
 	static void ManipulateConstructor(ILContext il)
 	{
-		// _multiplierBonus = 1;
+		// StatModCtorOverride::Constructor(ref _multiplierBonus);
 
 		ILCursor c = new(il);
 
 		c.Emit(OpCodes.Ldarg_0);
-		c.Emit(OpCodes.Ldc_R4, 1f);
+
 		c.Emit(
-			OpCodes.Stfld,
+			OpCodes.Ldflda,
 			AccessTools.DeclaredField(typeof(StatMod), "_multiplierBonus"));
+
+		c.Emit(
+			OpCodes.Call,
+			AccessTools.Method(typeof(StatModCtorOverride), "Constructor"));
+	}
+
+	static void Constructor(ref float _multiplierBonus)
+	{
+		if(SelectedMap.MapData.endless)
+			_multiplierBonus = 1f;
 	}
 }
