@@ -1,0 +1,11 @@
+{
+	"name": "PowerScaling",
+	"version_number": "1.0.0",
+	"website_url": "https://github.com/DragoonX6/20MinutesTillDawn.PowerScaling",
+	"description": "Changes the scaling of your stats in the Endless game mode, and rebalances it accordingly.",
+	"dependencies":
+	[
+		"Dragoon-MiscellaneousFixes-3.0.0",
+		"BepInExPackMTD-BepInExPack_20MTD-1.0.0"
+	]
+}
