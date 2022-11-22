@@ -19,7 +19,7 @@ namespace _20MinutesTillDawn.PowerScaling;
 [BepInPlugin(
 	"20MinutesTillDawn.PowerScaling",
 	"20 Minutes Till Dawn Power Scaling Mod",
-	"0.15.0")]
+	"1.0.0")]
 [BepInProcess("MinutesTillDawn.exe")]
 [BepInDependency("BetterUI", BepInDependency.DependencyFlags.SoftDependency)]
 [BepInDependency("20MinutesTillDawn.Fixes", "3.0.0.0")]
