@@ -7,9 +7,16 @@
 	</PropertyGroup>
 
 	<ItemGroup>
+		<Reference Include="BepInEx">
+			<HintPath>C:\Program Files (x86)\Steam\steamapps\common\20MinuteTillDawn\BepInEx\core\BepInEx.dll</HintPath>
+		</Reference>
 		<Reference Include="Mono.Cecil">
 			<HintPath>C:\Program Files (x86)\Steam\steamapps\common\20MinuteTillDawn\BepInEx\core\Mono.Cecil.dll</HintPath>
 		</Reference>
 	</ItemGroup>
+
+	<Target Name="PostBuild" AfterTargets="PostBuildEvent">
+		<Exec Command="copy /Y &quot;$(TargetPath)&quot; /B &quot;C:\Program Files (x86)\Steam\steamapps\common\20MinuteTillDawn\BepInEx\patchers\$(TargetFileName)&quot; /B&#xD;&#xA;copy /Y &quot;$(TargetDir)$(TargetName).pdb&quot; /B &quot;C:\Program Files (x86)\Steam\steamapps\common\20MinuteTillDawn\BepInEx\patchers\$(TargetName).pdb&quot; /B&#xD;&#xA;" />
+	</Target>
 
 </Project>
