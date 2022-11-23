@@ -36,7 +36,7 @@ public class PowerScaling: BaseUnityPlugin
 	{
 		Log = Logger;
 
-		// This one needs to be patched at all times.
+		// These ones need to be patched at all times.
 		always.PatchAll(typeof(StatModCtorOverride));
 		always.PatchAll(typeof(BanishSystem));
 
