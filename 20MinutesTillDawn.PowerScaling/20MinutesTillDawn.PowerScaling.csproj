@@ -29,7 +29,7 @@
 			<HintPath>C:\Program Files (x86)\Steam\steamapps\common\20MinuteTillDawn\BepInEx\core\BepInEx.Harmony.dll</HintPath>
 		</Reference>
 		<Reference Include="Mono.Cecil">
-		  <HintPath>C:\Program Files (x86)\Steam\steamapps\common\20MinuteTillDawn\BepInEx\core\Mono.Cecil.dll</HintPath>
+			<HintPath>C:\Program Files (x86)\Steam\steamapps\common\20MinuteTillDawn\BepInEx\core\Mono.Cecil.dll</HintPath>
 		</Reference>
 		<Reference Include="MonoMod.Utils">
 			<HintPath>C:\Program Files (x86)\Steam\steamapps\common\20MinuteTillDawn\BepInEx\core\MonoMod.Utils.dll</HintPath>
@@ -41,7 +41,7 @@
 			<HintPath>C:\Program Files (x86)\Steam\steamapps\common\20MinuteTillDawn\MinutesTillDawn_Data\Managed\UnityEngine.CoreModule.dll</HintPath>
 		</Reference>
 		<Reference Include="UnityEngine.UI">
-		  <HintPath>C:\Program Files (x86)\Steam\steamapps\common\20MinuteTillDawn\MinutesTillDawn_Data\Managed\UnityEngine.UI.dll</HintPath>
+			<HintPath>C:\Program Files (x86)\Steam\steamapps\common\20MinuteTillDawn\MinutesTillDawn_Data\Managed\UnityEngine.UI.dll</HintPath>
 		</Reference>
 	</ItemGroup>
 

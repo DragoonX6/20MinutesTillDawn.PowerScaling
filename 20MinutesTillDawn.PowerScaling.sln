@@ -5,6 +5,8 @@ VisualStudioVersion = 16.0.32126.315
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "20MinutesTillDawn.PowerScaling", "20MinutesTillDawn.PowerScaling\20MinutesTillDawn.PowerScaling.csproj", "{F165009F-C3B4-40A5-83AA-6BBF6A5AA949}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "20MinutesTillDawn.PowerScaling.Patcher", "20MinutesTillDawn.PowerScaling.Patcher\20MinutesTillDawn.PowerScaling.Patcher.csproj", "{994A3466-E215-4456-BF6E-469F2933723E}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +17,10 @@ Global
 		{F165009F-C3B4-40A5-83AA-6BBF6A5AA949}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F165009F-C3B4-40A5-83AA-6BBF6A5AA949}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F165009F-C3B4-40A5-83AA-6BBF6A5AA949}.Release|Any CPU.Build.0 = Release|Any CPU
+		{994A3466-E215-4456-BF6E-469F2933723E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{994A3466-E215-4456-BF6E-469F2933723E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{994A3466-E215-4456-BF6E-469F2933723E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{994A3466-E215-4456-BF6E-469F2933723E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

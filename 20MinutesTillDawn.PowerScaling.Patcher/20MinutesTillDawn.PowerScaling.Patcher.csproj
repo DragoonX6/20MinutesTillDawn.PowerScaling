@@ -1,0 +1,15 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<TargetFramework>net472</TargetFramework>
+		<RootNamespace>_20MinutesTillDawn.PowerScaling.Patcher</RootNamespace>
+		<LangVersion>latest</LangVersion>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<Reference Include="Mono.Cecil">
+			<HintPath>C:\Program Files (x86)\Steam\steamapps\common\20MinuteTillDawn\BepInEx\core\Mono.Cecil.dll</HintPath>
+		</Reference>
+	</ItemGroup>
+
+</Project>
