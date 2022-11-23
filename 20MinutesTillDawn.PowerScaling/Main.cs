@@ -27,6 +27,7 @@ public class PowerScaling: BaseUnityPlugin
 {
 	private Harmony instance = new("PowerScaling");
 	private Harmony always = new("PowerScaling.Always");
+	private const string patcherName = "20MinutesTillDawn.PowerScaling.Patcher";
 
 	public static ManualLogSource Log = null;
 
@@ -35,6 +36,22 @@ public class PowerScaling: BaseUnityPlugin
 	public void Awake()
 	{
 		Log = Logger;
+
+		bool hasPatcher = System
+			.AppDomain
+			.CurrentDomain
+			.GetAssemblies()
+			.Any(a => a.GetName().Name == patcherName);
+
+		if(!hasPatcher)
+		{
+			Logger.LogFatal(
+				$"Missing patcher! Make sure `{patcherName}.dll` is in your " +
+				"`patchers` folder!");
+			Logger.LogFatal("Mod will NOT load, continuing without it...");
+
+			return;
+		}
 
 		// These ones need to be patched at all times.
 		always.PatchAll(typeof(StatModCtorOverride));
