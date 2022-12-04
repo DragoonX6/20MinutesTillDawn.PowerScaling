@@ -47,7 +47,8 @@ public static class ModifyPowerupTree
 			"nimble_name",
 			"tiny_name",
 			"reflex_name",
-			"holy_arts_name"
+			"holy_arts_name",
+			"kunoichi_name",
 		};
 
 		List<string> infRepeatNames = new()
