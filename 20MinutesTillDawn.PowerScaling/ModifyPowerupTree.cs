@@ -49,6 +49,7 @@ public static class ModifyPowerupTree
 			"reflex_name",
 			"holy_arts_name",
 			"kunoichi_name",
+			"death_plague_name",
 		};
 
 		List<string> infRepeatNames = new()
