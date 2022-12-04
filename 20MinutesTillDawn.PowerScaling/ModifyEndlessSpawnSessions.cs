@@ -77,7 +77,7 @@ public static class ModifyEndlessSpawnSessions
 		yield return new() { monsterPrefab = monster["EyeMonster"],     HP = 10000,  maximum = 20,  numPerSpawn = 2,  spawnCooldown = 10, startTime = 360,  duration = 120, isElite = false };
 		yield return new() { monsterPrefab = monster["BigBoomer"],      HP = 20000,  maximum = 10,  numPerSpawn = 1,  spawnCooldown = 1,  startTime = 420,  duration = 120, isElite = false };
 		yield return new() { monsterPrefab = monster["BrainMonster"],   HP = 1200,   maximum = 600, numPerSpawn = 16, spawnCooldown = 1,  startTime = 480,  duration = 120, isElite = false };
-		yield return new() { monsterPrefab = monster["Lamprey"],        HP = 2000,   maximum = 300, numPerSpawn = 3,  spawnCooldown = 1,  startTime = 605,  duration = 55,  isElite = false };
+		yield return new() { monsterPrefab = monster["Lamprey"],        HP = 2000,   maximum = 300, numPerSpawn = 6,  spawnCooldown = 1,  startTime = 605,  duration = 55,  isElite = false };
 		yield return new() { monsterPrefab = monster["EyeMonster"],     HP = 2000,   maximum = 24,  numPerSpawn = 2,  spawnCooldown = 1,  startTime = 660,  duration = 120, isElite = false };
 		yield return new() { monsterPrefab = monster["Lamprey"],        HP = 3000,   maximum = 500, numPerSpawn = 5,  spawnCooldown = 1,  startTime = 660,  duration = 120, isElite = false };
 		yield return new() { monsterPrefab = monster["Boomer"],         HP = 15000,  maximum = 40,  numPerSpawn = 2,  spawnCooldown = 1,  startTime = 660,  duration = 120, isElite = false };
@@ -88,7 +88,7 @@ public static class ModifyEndlessSpawnSessions
 		yield return new() { monsterPrefab = monster["WingedMonster"],  HP = 180000, maximum = 1,   numPerSpawn = 1,  spawnCooldown = 10, startTime = 960,  duration = 5,   isElite = true  };
 		yield return new() { monsterPrefab = monster["BrainMonster"],   HP = 5000,   maximum = 600, numPerSpawn = 26, spawnCooldown = 1,  startTime = 960,  duration = 120, isElite = false };
 		yield return new() { monsterPrefab = monster["Lamprey"],        HP = 7000,   maximum = 600, numPerSpawn = 20, spawnCooldown = 1,  startTime = 1080, duration = 119, isElite = false };
-		yield return new() { monsterPrefab = monster["EyeMonster"],     HP = 2000,   maximum = 30,  numPerSpawn = 1,  spawnCooldown = 1,  startTime = 1080, duration = 119, isElite = false };
+		yield return new() { monsterPrefab = monster["EyeMonster"],     HP = 2000,   maximum = 30,  numPerSpawn = 4,  spawnCooldown = 1,  startTime = 1080, duration = 119, isElite = false };
 	}
 
 	[HarmonyPatch(typeof(MapInitializer), "Start")]
