@@ -93,6 +93,7 @@ public static class ModifyPowerupTree
 			case "windborne_name":        NerfWindBorne(p.powerup);     break;
 			case "eye_of_the_storm_name": BuffEyeOfTheStorm(p.powerup); break;
 			case "holy_arts_name":        BuffHolyArts(p.powerup);      break;
+			case "death_rounds_name":     BuffDeathRounds(p.powerup);   break;
 
 			case "intense_burn_name": AdjustMultiplierDamage(p.powerup, 1.2f); break;
 			case "electro_mastery_name": AdjustMultiplierDamage(p.powerup, 1.1f); break;
@@ -478,5 +479,13 @@ public static class ModifyPowerupTree
 
 		actionTrav.Field("range").SetValue(range);
 		actionTrav.Field("action").SetValue(action);
+	}
+
+	static void BuffDeathRounds(Powerup p)
+	{
+		MultiplierDamageMod mod = new();
+		Traverse.Create(mod).Field("multiplier").SetValue(1.5f);
+
+		ReplaceDamageMod(p, mod);
 	}
 }
