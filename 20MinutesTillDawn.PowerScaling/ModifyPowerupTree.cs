@@ -93,11 +93,8 @@ public static class ModifyPowerupTree
 			case "eye_of_the_storm_name": BuffEyeOfTheStorm(p.powerup); break;
 			case "holy_arts_name":        BuffHolyArts(p.powerup);      break;
 
-			case "intense_burn_name":
-			case "electro_mastery_name":
-			{
-				AdjustMultiplierDamage(p.powerup, 1.1f);
-			} break;
+			case "intense_burn_name": AdjustMultiplierDamage(p.powerup, 1.2f); break;
+			case "electro_mastery_name": AdjustMultiplierDamage(p.powerup, 1.1f); break;
 			}
 		});
 
