@@ -472,6 +472,12 @@ public static class ModifyPowerupTree
 			.Field("action")
 			.Field("action");
 
+		action = new();
+		actionTrav = Traverse.Create(action);
+		actionTrav.Field("damageType").SetValue(DamageType.Smite);
+		actionTrav.Field("percentDamage").SetValue(0.02f);
+		actionTrav.Field("championPercentDamage").SetValue(0.01f);
+
 		actionTrav.Field("range").SetValue(range);
 		actionTrav.Field("action").SetValue(action);
 	}
