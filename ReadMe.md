@@ -29,6 +29,10 @@ Caps:
   This only applies to moving your character (so you don't become faster than Sonic), the actual stat is still uncapped and has no effect on `Windborne`.
 
 Nerfs:
+* [NEW] Death Plague has been limited to 1  
+  Having more than 1 is useless.
+* [NEW] Kunoichi has been limited to 1  
+  It's already way too strong in this mod, so having even more is far too much. Expect general nerfs to (summon) attack speed soon.
 * Take Aim has been limited to 1  
   From play testing there has never been a situation where I wanted this more than once because of the negative spread.
 * Assassin has been limited to 1  
@@ -39,13 +43,14 @@ Nerfs:
   See Dual Wield buff.
 * Kill clip has been limited to 1  
   Having it more than once is too OP, now you need to work for it (a little bit).
-* Frostbite has been limited to 1, and a single proc per enemy  
-  Even by limiting it to just once, it would proc multiple times per enemy and essentially make the game a snoozefest after 30 minutes because everything dies instantly.
+* [FIXED|CHANGED] Frostbite has been limited to 1, and a single proc per enemy  
+  Even by limiting it to just once, it would proc multiple times per enemy and essentially make the game a snoozefest after 30 minutes because everything dies instantly.  
+  Fixed a bug where stacks would still do 15% damage, stacks now do 5% max health damage.
 * Sharpen damage has been lowered to 15%
 * Ritual growth percentage has been changed to 0.1%
 * Electro Mastery's size growth has been limited to 5%
 * Shatter's damage has been nerfed to 1%
-* Intense Burn's damage has been nerfed to 10%  
+* [CHANGED] Intense Burn's damage has been nerfed to 20%  
   The damage would explode really quickly, now it can still do a lot of damage but requires more work.
 * Electro Mastery's damage has been nerfed to 10%  
   The same as with intense burn, this one has a head start, but burn damage has way more procs.
@@ -61,6 +66,7 @@ Buffs:
   This is so you can keep up with the scaling of the enemies.
 * Every 20 minutes your experience growth will increase by an additional 10%  
   See above.
+* [NEW] Death Rounds now gives 50% gun damage
 * Sniper can be taken an unlimited amount of times
 * Reaper Rounds can be taken an unlimited amount of times
 * Aged Dragon can be taken an unlimited amount of times
@@ -77,3 +83,5 @@ Buffs:
 * Holy Arts range has been doubled.
 * Holy Might increases Smite damage by 2.5% for each current HP you have.  
   Note "current HP", getting hit will lower your Smite damage.
+* [NEW] Holy Arts stacks now do 2% max health damage.  
+  If you managed to get stacks with Shana, then the subsequent stacks would be useless.
