@@ -40,7 +40,6 @@ public static class ModifyPowerupTree
 			//"ritual_name",
 			"take_aim_name",
 			"assassin_name",
-			"focal_point_name",
 			"light_weaponry_name",
 			"kill_clip_name",
 			"frostbite_name",
