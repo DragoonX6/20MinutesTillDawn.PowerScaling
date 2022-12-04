@@ -338,6 +338,18 @@ public static class ModifyPowerupTree
 			.Create(effects[0])
 			.Field("action")
 			.SetValue(fpda);
+
+		effects = Traverse
+			.Create(p)
+			.Field("stackedEffects")
+			.GetValue<PerkEffect[]>();
+
+		fpda = new FrostbitePercentDamageAction(action, 0.05f);
+
+		Traverse
+			.Create(effects[0])
+			.Field("action")
+			.SetValue(fpda);
 	}
 
 	// Nerf shatter to only do 1% damage.

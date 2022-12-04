@@ -16,7 +16,9 @@ public class FrostbitePercentDamageAction: PercentDamageAction
 
 	private bool subscribed = false;
 
-	public FrostbitePercentDamageAction(PercentDamageAction wrapped)
+	public FrostbitePercentDamageAction(
+		PercentDamageAction wrapped,
+		float percentOverride = -1f)
 	{
 		FieldInfo damageTypeField = AccessTools
 			.DeclaredField(typeof(PercentDamageAction), "damageType");
@@ -34,7 +36,11 @@ public class FrostbitePercentDamageAction: PercentDamageAction
 			.GetValue(wrapped);
 
 		damageTypeField.SetValue(this, damageType);
-		percentDamageField.SetValue(this, percentDamage);
+
+		percentDamageField.SetValue(
+			this,
+			percentOverride < 0f ? percentDamage : percentOverride);
+
 		championPercentDamageField.SetValue(this, championPercentDamage);
 	}
 
